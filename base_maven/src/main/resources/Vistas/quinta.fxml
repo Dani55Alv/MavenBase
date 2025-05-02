@@ -25,7 +25,7 @@
                         <TextField fx:id="nombreFieldAgregar" promptText="Introduce el nombre" />
 
                         <!-- Botón para agregar el jugador, vinculado al método 'agregarJugador' -->
-                        <Button fx:id="Agregar" text="Agregar" onAction="#agregarJugador" />
+                        <Button fx:id="Agregar" text="Agregar" onAction="#insertarJugador_evento" />
                     </children>
                 </VBox>
 
@@ -40,7 +40,7 @@
 
                         <!-- Botón para actualizar el jugador, vinculado al método
                         'actualizarJugador' -->
-                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador" />                    </children>
+                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador_evento" />                    </children>
                 </VBox>
 
                 <VBox alignment="CENTER">
@@ -89,7 +89,8 @@
                 <VBox alignment="CENTER">
                     <children>
                         <Label text="Recuperar" />
-                        <Button fx:id="RECUPERAR" text="Recuperar" onAction="#recuperar" />
+                        <Button fx:id="RECUPERAR" text="Recuperar"
+                            onAction="#obtenerJugadores_online_evento" />
                     </children>
                 </VBox>
             </children>

@@ -1,6 +1,9 @@
 package com.base.Controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.base.App;
@@ -21,20 +24,29 @@ public class QuintaController {
     App.setRoot("primary");
   }
 
+
+
+  private CuartaController cuartaController;
+
+  // Este método se llamará para pasar la instancia de CuartaController
+  public void setCuartaController(CuartaController cuartaController) {
+    this.cuartaController = cuartaController;
+  }
   @FXML
   private Button GUARDAR;
 
   @FXML
   private Button RECUPERAR;
+ private JugadorDao jugadorDao;
 
-  // Instancia de Servidor (se inicializa aquí)
-  private JugadorDao jugadorDao;
-
-  // Constructor donde inicializas el objeto servidor y pasas al DAO
-  public QuintaController() {
-        this.jugadorDao = new JugadorDao("Servidor_principal"); // Aquí se inicializa el servidor
+    public void initialize() {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:jugadores.db");
+            jugadorDao = new JugadorDao(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
   @FXML
   private void guardar() {
     // Llamamos al método guardar_datos() de Jugador_Dao
@@ -46,25 +58,15 @@ public class QuintaController {
   }
 
   @FXML
-  private void recuperar() {
-    String ruta = "C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
-    String fichero = "informacion.bin";
-    // Llamamos al método recuperar_datos() de Jugador_Dao
-    List<Jugador> jugadoresRecuperados = jugadorDao.recuperar_datos(ruta, fichero); // Asumimos que este método devuelve
-                                                                                    // una
-    // lista de jugadores
-    Jugador.actualizarContadorId(jugadoresRecuperados); // <- Aquí evitamos la repeticion de id's de juadores
+  private void obtenerJugadores_online_evento() {
+    try {
+      jugadorDao.obtenerJugadores_online();
+      if (cuartaController != null) {
+        cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
+      }
 
-    // Convertimos la lista en un ObservableList
-    ObservableList<Jugador> jugadoresList = FXCollections.observableArrayList(jugadoresRecuperados);
-
-    // Llamamos al método cargarJugadores de SecondaryController para actualizar la
-    // tabla
-    secondaryController.cargarJugadores(jugadoresList);
-
-    // La esctructura dinamica recarga tambien los datos
-    jugadorDao.getListaJugadores().clear();
-    jugadorDao.getListaJugadores().addAll(jugadoresList);
+    } catch (SQLException e) {
+    }
   }
 
   private SecondaryController secondaryController;
@@ -104,9 +106,17 @@ public class QuintaController {
   private TextField idFieldEliminar;
 
   @FXML
-  private void agregarJugador() {
-    String nombre = nombreFieldAgregar.getText(); // Obtener el nombre desde un TextField
-    jugadorDao.agregarJugador(nombre); // Usamos el Servidor directamente
+  private void insertarJugador_evento() {
+    
+    Jugador nombre =new Jugador(nombreFieldAgregar.getText()); // Obtener el nombre desde un TextField
+
+    try {
+      jugadorDao.insertarJugador_online(nombre); // Usamos el Servidor directamente
+      if (cuartaController != null) {
+        cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
+      }
+    } catch (SQLException e) {
+    }
     nombreFieldAgregar.clear();
   }
 
@@ -114,15 +124,26 @@ public class QuintaController {
   private void eliminarJugador() {
     Integer id = Integer.parseInt(idFieldEliminar.getText()); // Obtener el ID desde un TextField
     jugadorDao.eliminarJugador(id); // Usamos el Servidor directamente
+
+    
     idFieldEliminar.clear(); // Limpia el campo de texto
 
   }
 
   @FXML
-  private void actualizarJugador() {
+  private void actualizarJugador_evento() {
     Integer id = Integer.parseInt(idFieldActualizar.getText()); // Obtener el ID desde un TextField
-    String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField
-    jugadorDao.actualizarJugador(id, nombre); // Usamos el Servidor directamente
+    String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField+
+
+    Jugador jugador_Buscar = new Jugador(nombre); // Obtener el nombre desde un TextField
+try {
+  jugadorDao.actualizarJugador_online(jugador_Buscar); 
+  if (cuartaController != null) {
+    cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
+  }
+
+} catch (SQLException e) {
+}
     idFieldActualizar.clear();
     nombreFieldActualizar.clear();
   }

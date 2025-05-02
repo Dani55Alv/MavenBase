@@ -173,12 +173,13 @@ public class JugadorDao {
     }
 
     // Método para obtener todos los jugadores
-    public List<Jugador> obtenerJugadores() throws SQLException {
+    public List<Jugador> obtenerJugadores_online() throws SQLException {
         List<Jugador> jugadores = new ArrayList<>();
         String query = "SELECT * FROM jugadores"; // Ajusta esto según tu tabla
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
+                
                 String nombre = rs.getString("nombre");
                 double puntos = rs.getDouble("puntos");
                 jugadores.add(new Jugador(nombre, puntos));
@@ -188,20 +189,23 @@ public class JugadorDao {
     }
 
     // Método para insertar un jugador
-    public void insertarJugador(Jugador jugador) throws SQLException {
+    public void insertarJugador_online(Jugador jugador) throws SQLException {
         String query = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, jugador.getNombre());
             stmt.setDouble(2, jugador.getPuntos());
             stmt.executeUpdate();
         }
+
+        
+        System.out.println("Jugador insertado");
     }
 
     // Método para actualizar los puntos de un jugador
-    public void actualizarJugador(Jugador jugador) throws SQLException {
-        String query = "UPDATE jugadores SET puntos = ? WHERE nombre = ?";
+    public void actualizarJugador_online(Jugador jugador) throws SQLException {
+        String query = "UPDATE jugadores SET nombre = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setDouble(1, jugador.getPuntos());
+            stmt.setDouble(1, jugador.getId());
             stmt.setString(2, jugador.getNombre());
             stmt.executeUpdate();
         }
