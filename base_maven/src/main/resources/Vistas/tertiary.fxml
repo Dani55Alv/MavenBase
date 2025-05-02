@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>  
+
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.base.Controller.TertiaryController">
+
+    <!-- El método llamado por onAction="#..." debe ser public o private y estar
+                        anotado con @FXML.-->
+    <children>
+        <!-- Primera fila: Agregar, Actualizar, Eliminar -->
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Agregar jugadores" />
+                        <TextField fx:id="nombreFieldAgregar" promptText="Introduce el nombre" />
+
+                        <!-- Botón para agregar el jugador, vinculado al método 'agregarJugador' -->
+                        <Button fx:id="Agregar" text="Agregar" onAction="#agregarJugador" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Actualizar jugadores (El id no)" />
+                        <!-- Campo de texto para el ID del jugador -->
+                        <TextField fx:id="idFieldActualizar" promptText="Introduce el ID del jugador" />
+
+                        <!-- Campo de texto para el nuevo nombre del jugador -->
+                        <TextField fx:id="nombreFieldActualizar" promptText="Introduce el nuevo nombre" />
+
+                        <!-- Botón para actualizar el jugador, vinculado al método
+                        'actualizarJugador' -->
+                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador" />                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Eliminar jugadores" />
+
+                        <!-- Campo de texto para el ID del jugador -->
+                        <TextField fx:id="idFieldEliminar" promptText="Introduce el ID" />
+
+                        <!-- Botón para eliminar el jugador, vinculado al método 'eliminarJugador' -->
+                        <Button fx:id="Eliminar" text="Eliminar" onAction="#eliminarJugador" />                   
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Segunda fila: Ordenar por puntos y nombre -->
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Ordenar por puntos" />
+                        <Button fx:id="ORP" text="Ordenar" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Ordenar por nombre" />
+                        <Button fx:id="ORN" text="Ordenar" onAction="#ordenarNombreAlfabeticamente" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Tercera fila: Guardar y Recuperar -->
+        <HBox alignment="CENTER" spacing="20.0">
+            <children>
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Guardar" />
+                        <Button fx:id="GUARDAR" text="Guardar" onAction="#guardar" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <children>
+                        <Label text="Recuperar" />
+                        <Button fx:id="RECUPERAR" text="Recuperar" onAction="#recuperar" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Botón Volver solo -->
+        <VBox alignment="CENTER" spacing="10.0">
+            <children>
+                <Label text="Volver al menú" />
+                <Button fx:id="VOLVER" text="Volver" onAction="#switchToPrimary" />
+            </children>
+        </VBox>
+
+    </children>
+
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+    </padding>
+</VBox>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.base.Controller.ComeCocosController">
+
+    <!-- Centro de la pantalla con GridPane -->
+    <center>
+        <GridPane fx:id="gridTablero"
+            hgap="5" vgap="5"
+            alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+        </GridPane>
+    </center>
+
+    <!-- Parte inferior con los botones de control -->
+    <bottom>
+        <HBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15" />
+            </padding>
+            <VBox spacing="5" alignment="CENTER">
+                <Button text="↑" onAction="#moverArriba" />
+                <Button text="←" onAction="#moverIzquierda" />
+                <Button text="↓" onAction="#moverAbajo" />
+                <Button text="→" onAction="#moverDerecha" />
+            </VBox>
+        </HBox>
+    </bottom>
+
+
+    <!-- Jugador seleccionado interfaz y puntos totales en la interfaz también-->
+</BorderPane>
