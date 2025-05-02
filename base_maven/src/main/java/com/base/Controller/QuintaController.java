@@ -32,8 +32,8 @@ public class QuintaController {
 
   // Constructor donde inicializas el objeto servidor y pasas al DAO
   public QuintaController() {
-    this.jugadorDao = new JugadorDao("Servidor_principal"); // Aquí se inicializa el servidor
-  }
+        this.jugadorDao = new JugadorDao("Servidor_principal"); // Aquí se inicializa el servidor
+    }
 
   @FXML
   private void guardar() {
@@ -135,5 +135,6 @@ public class QuintaController {
 
     jugadorDao.ordenarNombreAlfabeticamente();
   }
+
 
 }

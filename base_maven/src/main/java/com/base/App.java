@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.URL;
 import com.base.Controller.CuartaController;
 import com.base.Controller.SecondaryController;
 import com.base.Controller.TertiaryController;
+import com.base.Controller.QuintaController;
 
 public class App extends Application {
 
@@ -20,9 +22,12 @@ public class App extends Application {
     // Guardamos las raíces y controladores
     private static Parent secondaryRoot;
     private static Parent tertiaryRoot;
+    private static Parent quintaRoot;
+
     private static SecondaryController secondaryController;
     private static TertiaryController tertiaryController;
     private static Parent cuartaRoot;
+    private static QuintaController quintaController;
     private static CuartaController cuartaController;
 
     @Override
@@ -43,11 +48,17 @@ public class App extends Application {
         cuartaRoot = loaderCuarta.load();
         cuartaController = loaderCuarta.getController();
 
+        // Cargar quinta.fxml
+        FXMLLoader loaderQuinta = new FXMLLoader(App.class.getResource("/Vistas/quinta.fxml"));
+        quintaRoot = loaderQuinta.load();
+        quintaController = loaderQuinta.getController();
+
         // Enlazar los controladores
         tertiaryController.setSecondaryController(secondaryController);
 
         // Cargar la escena inicial
         scene = new Scene(loadFXML("/Vistas/primary"), 640, 480);
+        stage.setTitle("Come_cocos");
         stage.setScene(scene);
         stage.show();
     }
@@ -77,6 +88,10 @@ public class App extends Application {
     // Mas pasos de vistas sin recargar
     public static void showCuarta() {
         scene.setRoot(cuartaRoot);
+    }
+
+    public static void showQuinta() {
+        scene.setRoot(quintaRoot);
     }
 
     public static void main(String[] args) {

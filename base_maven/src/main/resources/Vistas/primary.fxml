@@ -29,7 +29,7 @@
           -fx-background-color: lightgray;           /* color del fondo */
           -fx-padding: 5;">
          <Button fx:id="primaryButton2" text="Administrador offline" onAction="#switchTothirdy" />
-         <Button fx:id="primaryButton3" text="Administrador online" />
+         <Button fx:id="primaryButton3" text="Administrador online" onAction="#switchToQuinta" />
          <!-- onAction="#switchToQunita"-->
       </HBox>
 

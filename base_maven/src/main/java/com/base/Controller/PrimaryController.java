@@ -31,6 +31,12 @@ public class PrimaryController {
         App.showCuarta();
     }
 
+
+    @FXML
+    private void switchToQuinta() throws IOException {
+        App.showQuinta();
+    }
+
     @FXML
 private Button primaryButton;
 
