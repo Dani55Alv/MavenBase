@@ -22,6 +22,9 @@ public class Jugador implements Serializable {
         contadorId++;
 
     }
+//constructor vacio
+    public Jugador() {
+    }
 
     // Constructor que acepta nombre y puntos para la base de datos
     public Jugador(String nombre, double puntos) {
@@ -61,7 +64,7 @@ public class Jugador implements Serializable {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import com.base.App;
@@ -20,10 +21,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import util.DatabaseConnector;
 
 public class CuartaController {
 
-  
   @FXML
   private TableView<Jugador> tablaJugadoresONLINE;
   @FXML
@@ -33,16 +34,20 @@ public class CuartaController {
   @FXML
   private TableColumn<Jugador, Double> colPuntosOnline;
 
-  
   public void actualizarTablaJugadores_bd() {
     try {
+      // Obtén los jugadores actualizados
       List<Jugador> jugadores = jugadorDao.obtenerJugadores_online();
       ObservableList<Jugador> listaObservable = FXCollections.observableArrayList(jugadores);
+
+      // Establece los nuevos elementos en la tabla
       tablaJugadoresONLINE.setItems(listaObservable);
+      System.out.println("Tabla actualizada.");
     } catch (SQLException e) {
       e.printStackTrace(); // Manejo básico del error
     }
   }
+
   // Método para cambiar de vista (Menú)
   @FXML
   private void switchToPrimary() throws IOException {
@@ -52,26 +57,50 @@ public class CuartaController {
   // Lista observable que se actualizará dinámicamente
   private ObservableList<Jugador> jugadoresList = FXCollections.observableArrayList();
 
-
   private JugadorDao jugadorDao;
 
   @FXML
   private void initialize() {
-      try {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:jugadores.db");
-        jugadorDao = new JugadorDao(conn);
+    try {
+      Connection conn = DatabaseConnector.conectar(); // <- Usamos la conexión centralizada
+      jugadorDao = new JugadorDao(conn);
 
-        // Configurar las columnas
-        colIdOnline.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombreOnline.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
+      // Verificar o crear la tabla si no existe
+      String createTableQuery = "CREATE TABLE IF NOT EXISTS jugadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, puntos REAL)";
+      try (Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate(createTableQuery);
+        System.out.println("Tabla 'jugadores' verificada/creada correctamente.");
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
 
-        // Cargar los datos en la tabla
-        ObservableList<Jugador> lista = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
-        tablaJugadoresONLINE.setItems(lista);
+      // Configurar las columnas
+      colIdOnline.setCellValueFactory(new PropertyValueFactory<>("id"));
+      colNombreOnline.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+      colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
+
+      // Cargar los datos en la tabla
+      ObservableList<Jugador> lista = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+      tablaJugadoresONLINE.setItems(lista);
+
+      System.out.println("Tabla recargada");
 
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void irACuartaVista() {
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/cuarta.fxml"));
+      Parent root = loader.load();
+      Stage stage = new Stage();
+      stage.setTitle("Vista Cuarta");
+      stage.setScene(new Scene(root));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -105,10 +134,5 @@ public class CuartaController {
   public void cargarJugadores(ObservableList<Jugador> jugadores) {
     jugadoresList.setAll(jugadores); // Actualiza la lista de jugadores en la tabla
   }
-
-
-
-
-
 
 }

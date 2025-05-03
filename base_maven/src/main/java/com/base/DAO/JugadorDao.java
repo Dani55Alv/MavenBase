@@ -179,26 +179,41 @@ public class JugadorDao {
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                
-                String nombre = rs.getString("nombre");
-                double puntos = rs.getDouble("puntos");
-                jugadores.add(new Jugador(nombre, puntos));
+                Jugador jugador = new Jugador(); // Recuperas los atributos
+                jugador.setId(rs.getInt("id"));
+                jugador.setNombre(rs.getString("nombre"));
+                jugador.setPuntos(rs.getDouble("puntos"));
+                jugadores.add(jugador);
             }
         }
+        System.out.println("Jugadores obtenidos");
+
         return jugadores;
+
     }
 
     // Método para insertar un jugador
     public void insertarJugador_online(Jugador jugador) throws SQLException {
         String query = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, jugador.getNombre());
             stmt.setDouble(2, jugador.getPuntos());
-            stmt.executeUpdate();
-        }
 
-        
-        System.out.println("Jugador insertado");
+            // Ejecutar la inserción
+            stmt.executeUpdate();
+            System.out.println("Jugador insertado");
+
+            try (Statement idStmt = connection.createStatement();
+                    ResultSet rs = idStmt.executeQuery("SELECT last_insert_rowid()")) {
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    jugador.setId(id);
+                    System.out.println("Jugador insertado con id (manual): " + id);
+                }
+            }
+
+        }
     }
 
     // Método para actualizar los puntos de un jugador
@@ -210,4 +225,22 @@ public class JugadorDao {
             stmt.executeUpdate();
         }
     }
+
+
+    // Método para eliminar un jugador por su ID
+    public void eliminarJugador_online(int id) throws SQLException {
+        String query = "DELETE FROM jugadores WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id); // Establecer el ID del jugador a eliminar
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Jugador con ID " + id + " eliminado correctamente.");
+            } else {
+                System.out.println("No se encontró un jugador con el ID " + id);
+            }
+        }
+    }
+
 }

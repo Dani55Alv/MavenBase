@@ -9,7 +9,11 @@ import java.sql.SQLException;
 import com.base.App;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import util.DatabaseConnector;
 
 public class PrimaryController {
@@ -43,7 +47,7 @@ public class PrimaryController {
 
     @FXML
     private void inicializarBaseDeDatos_Boton_online() {
-        String sql = "CREATE TABLE IF NOT EXISTS jugadores (nombre TEXT NOT NULL, puntos INTEGER NOT NULL)";
+        String sql = "CREATE TABLE IF NOT EXISTS jugadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, puntos INTEGER NOT NULL)";
         try (Connection conn = DatabaseConnector.conectar()) {
             // Verificar si la conexión fue exitosa
             if (conn == null) {
@@ -69,9 +73,12 @@ public class PrimaryController {
                 }
             }
 
-            // Cambiar a la cuarta vista después de crear/verificar la tabla
-            App.showCuarta();
-        } catch (SQLException e) {
+
+
+            // Cambiar la vista dentro de la misma ventana
+            App.setRoot("cuarta");
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

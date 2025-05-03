@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-    private static final String URL = "jdbc:sqlite:base.db";
-
+    //private static final String URL = "jdbc:sqlite:base.db";
+    private static final String URL = "jdbc:sqlite:C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base.db";
+    
     public static Connection conectar() {
         try {
             return DriverManager.getConnection(URL);

@@ -33,14 +33,18 @@
                     <children>
                         <Label text="Actualizar jugadores (El id no)" />
                         <!-- Campo de texto para el ID del jugador -->
-                        <TextField fx:id="idFieldActualizar" promptText="Introduce el ID del jugador" />
+                        <TextField fx:id="idFieldActualizar"
+                            promptText="Introduce el ID del jugador" />
 
                         <!-- Campo de texto para el nuevo nombre del jugador -->
-                        <TextField fx:id="nombreFieldActualizar" promptText="Introduce el nuevo nombre" />
+                        <TextField fx:id="nombreFieldActualizar"
+                            promptText="Introduce el nuevo nombre" />
 
                         <!-- Botón para actualizar el jugador, vinculado al método
                         'actualizarJugador' -->
-                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador_evento" />                    </children>
+                        <Button fx:id="Actualizar" text="Actualizar"
+                            onAction="#actualizarJugador_evento" />
+                    </children>
                 </VBox>
 
                 <VBox alignment="CENTER">
@@ -51,7 +55,8 @@
                         <TextField fx:id="idFieldEliminar" promptText="Introduce el ID" />
 
                         <!-- Botón para eliminar el jugador, vinculado al método 'eliminarJugador' -->
-                        <Button fx:id="Eliminar" text="Eliminar" onAction="#eliminarJugador" />                   
+                        <Button fx:id="Eliminar" text="Eliminar"
+                            onAction="#eliminarJugador_online_evento" />
                     </children>
                 </VBox>
             </children>
@@ -89,7 +94,7 @@
                 <VBox alignment="CENTER">
                     <children>
                         <Label text="Recuperar" />
-                        <Button fx:id="RECUPERAR" text="Recuperar"
+                        <Button fx:id="RECUPERAR_Online" text="Actualizar tabla"
                             onAction="#obtenerJugadores_online_evento" />
                     </children>
                 </VBox>
@@ -104,7 +109,12 @@
             </children>
         </VBox>
 
+
+
+
     </children>
+
+
 
     <padding>
         <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />

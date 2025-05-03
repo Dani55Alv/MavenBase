@@ -18,35 +18,32 @@ import javafx.collections.ObservableList;
 import com.base.Model.Jugador;
 
 public class QuintaController {
+ 
 
   @FXML
   private void switchToPrimary() throws IOException {
     App.setRoot("primary");
   }
 
+  // Este método se llaará para pasar la instancia de CuartaController
 
-
-  private CuartaController cuartaController;
-
-  // Este método se llamará para pasar la instancia de CuartaController
-  public void setCuartaController(CuartaController cuartaController) {
-    this.cuartaController = cuartaController;
-  }
   @FXML
   private Button GUARDAR;
 
   @FXML
-  private Button RECUPERAR;
- private JugadorDao jugadorDao;
+  private Button RECUPERAR_Online;
+  private JugadorDao jugadorDao;
 
-    public void initialize() {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:jugadores.db");
-            jugadorDao = new JugadorDao(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+  public void initialize() {
+    try {
+      Connection connection = DriverManager.getConnection(
+          "jdbc:sqlite:C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base.db");
+      jugadorDao = new JugadorDao(connection);
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
+  }
+
   @FXML
   private void guardar() {
     // Llamamos al método guardar_datos() de Jugador_Dao
@@ -61,9 +58,6 @@ public class QuintaController {
   private void obtenerJugadores_online_evento() {
     try {
       jugadorDao.obtenerJugadores_online();
-      if (cuartaController != null) {
-        cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
-      }
 
     } catch (SQLException e) {
     }
@@ -107,25 +101,29 @@ public class QuintaController {
 
   @FXML
   private void insertarJugador_evento() {
-    
-    Jugador nombre =new Jugador(nombreFieldAgregar.getText()); // Obtener el nombre desde un TextField
+
+    Jugador nombre = new Jugador(nombreFieldAgregar.getText()); // Obtener el nombre desde un TextField
 
     try {
       jugadorDao.insertarJugador_online(nombre); // Usamos el Servidor directamente
-      if (cuartaController != null) {
-        cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
-      }
+
+      // Llamar a actualizarTablaJugadores_bd() de CuartaController
+
     } catch (SQLException e) {
     }
     nombreFieldAgregar.clear();
   }
 
   @FXML
-  private void eliminarJugador() {
+  private void eliminarJugador_online_evento() {
     Integer id = Integer.parseInt(idFieldEliminar.getText()); // Obtener el ID desde un TextField
-    jugadorDao.eliminarJugador(id); // Usamos el Servidor directamente
+    try {
+      jugadorDao.eliminarJugador_online(id); // Usamos el Servidor directamente
 
-    
+    } catch (SQLException e) {
+
+    }
+
     idFieldEliminar.clear(); // Limpia el campo de texto
 
   }
@@ -136,14 +134,11 @@ public class QuintaController {
     String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField+
 
     Jugador jugador_Buscar = new Jugador(nombre); // Obtener el nombre desde un TextField
-try {
-  jugadorDao.actualizarJugador_online(jugador_Buscar); 
-  if (cuartaController != null) {
-    cuartaController.actualizarTablaJugadores_bd(); // Llamar al método de CuartaController
-  }
+    try {
+      jugadorDao.actualizarJugador_online(jugador_Buscar);
 
-} catch (SQLException e) {
-}
+    } catch (SQLException e) {
+    }
     idFieldActualizar.clear();
     nombreFieldActualizar.clear();
   }
@@ -156,6 +151,5 @@ try {
 
     jugadorDao.ordenarNombreAlfabeticamente();
   }
-
 
 }

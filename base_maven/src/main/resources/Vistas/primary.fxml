@@ -13,7 +13,7 @@
 
 
       <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="ONLINE" onAction="#inicializarBaseDeDatos_Boton_online" />
+      <Button fx:id="primaryButton" text="ONLINE" onAction="#irACuartaVista" />
       <Label text="Primary View" />
       <Button fx:id="primaryButton2" text="OFFLINE" onAction="#switchToSecondary" />
 
