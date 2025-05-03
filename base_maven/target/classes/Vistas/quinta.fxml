@@ -42,8 +42,8 @@
 
                         <!-- Botón para actualizar el jugador, vinculado al método
                         'actualizarJugador' -->
-                        <Button fx:id="Actualizar" text="Actualizar"
-                            onAction="#actualizarJugador_evento" />
+                        <Button fx:id="Actualizar" text="Actualizar jugador"
+                            onAction="#actualizarJugador_online_evento" />
                     </children>
                 </VBox>
 
@@ -75,31 +75,14 @@
                 <VBox alignment="CENTER">
                     <children>
                         <Label text="Ordenar por nombre" />
-                        <Button fx:id="ORN" text="Ordenar" onAction="#ordenarNombreAlfabeticamente" />
+                        <Button fx:id="ORN_online" text="Ordenar"
+                            onAction="#ordenarNombreAlfabeticamente_online_evento" />
                     </children>
                 </VBox>
             </children>
         </HBox>
 
-        <!-- Tercera fila: Guardar y Recuperar -->
-        <HBox alignment="CENTER" spacing="20.0">
-            <children>
-                <VBox alignment="CENTER">
-                    <children>
-                        <Label text="Guardar" />
-                        <Button fx:id="GUARDAR" text="Guardar" onAction="#guardar" />
-                    </children>
-                </VBox>
-
-                <VBox alignment="CENTER">
-                    <children>
-                        <Label text="Recuperar" />
-                        <Button fx:id="RECUPERAR_Online" text="Actualizar tabla"
-                            onAction="#obtenerJugadores_online_evento" />
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
+       
 
         <!-- Botón Volver solo -->
         <VBox alignment="CENTER" spacing="10.0">

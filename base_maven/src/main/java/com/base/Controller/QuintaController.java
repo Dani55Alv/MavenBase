@@ -10,15 +10,17 @@ import com.base.App;
 import com.base.DAO.JugadorDao;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
+import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.base.Model.Jugador;
 
 public class QuintaController {
- 
 
   @FXML
   private void switchToPrimary() throws IOException {
@@ -27,11 +29,6 @@ public class QuintaController {
 
   // Este método se llaará para pasar la instancia de CuartaController
 
-  @FXML
-  private Button GUARDAR;
-
-  @FXML
-  private Button RECUPERAR_Online;
   private JugadorDao jugadorDao;
 
   public void initialize() {
@@ -42,31 +39,6 @@ public class QuintaController {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-  }
-
-  @FXML
-  private void guardar() {
-    // Llamamos al método guardar_datos() de Jugador_Dao
-
-    String ruta = "C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
-    String fichero = "informacion.bin";
-    jugadorDao.grabar_datos(ruta, fichero);
-    ;
-  }
-
-  @FXML
-  private void obtenerJugadores_online_evento() {
-    try {
-      jugadorDao.obtenerJugadores_online();
-
-    } catch (SQLException e) {
-    }
-  }
-
-  private SecondaryController secondaryController;
-
-  public void setSecondaryController(SecondaryController secondaryController) {
-    this.secondaryController = secondaryController;
   }
 
   // Definición de los campos de texto en la vista FXML
@@ -129,7 +101,7 @@ public class QuintaController {
   }
 
   @FXML
-  private void actualizarJugador_evento() {
+  private void actualizarJugador_online_evento() {
     Integer id = Integer.parseInt(idFieldActualizar.getText()); // Obtener el ID desde un TextField
     String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField+
 
@@ -144,12 +116,34 @@ public class QuintaController {
   }
 
   @FXML
-  private Button ORN;
+  private Button ORN_online;
+
+  private CuartaController cuartaController;
+
+  public void setCuartaController(CuartaController cuartaController) {
+    this.cuartaController = cuartaController;
+  }
+  // ordenarNombreAlfabeticamente_online_evento
 
   @FXML
-  private void ordenarNombreAlfabeticamente() {
+  private void ordenarNombreAlfabeticamente_online_evento() {
+     try {
+    // 1) Cargo de nuevo la vista cuarta.fxml y obtengo su controlador
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/cuarta.fxml"));
+    Parent root = loader.load();
+    CuartaController ctrl = loader.getController();
 
-    jugadorDao.ordenarNombreAlfabeticamente();
+    // 2) Llamo directamente al método de ese controlador
+    ctrl.ordenarTablaPorNombre2();
+
+    // 3) Muestro la UI (ó bien reemplazo la actual ventana, según tu flujo)
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root));
+    stage.show();
+
+  } catch (IOException | SQLException e) {
+    e.printStackTrace();
+  }
   }
 
 }

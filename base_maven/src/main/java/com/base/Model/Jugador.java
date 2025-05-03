@@ -8,7 +8,7 @@ public class Jugador implements Serializable {
     private static final long serialVersionUID = -4442119677483243372L; // SerialVersionUID único para evitar erroes de
                                                                         // serializacion
 
-    private static Integer contadorId = 1001; // contador global para IDs
+    private static Integer contadorId = 0; // contador global para IDs
 
     private Integer id; // id único para cada jugador
     private String nombre;

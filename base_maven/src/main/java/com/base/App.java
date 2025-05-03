@@ -53,6 +53,9 @@ public class App extends Application {
         quintaRoot = loaderQuinta.load();
         quintaController = loaderQuinta.getController();
 
+        // Pasar la referencia de CuartaController
+        quintaController.setCuartaController(cuartaController);
+
         // Enlazar los controladores
         tertiaryController.setSecondaryController(secondaryController);
 

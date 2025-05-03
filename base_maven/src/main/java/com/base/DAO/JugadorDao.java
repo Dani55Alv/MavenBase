@@ -216,14 +216,30 @@ public class JugadorDao {
         }
     }
 
-    // Método para actualizar los puntos de un jugador
+    // Método para actualizar el nombre de un jugador
     public void actualizarJugador_online(Jugador jugador) throws SQLException {
         String query = "UPDATE jugadores SET nombre = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setDouble(1, jugador.getId());
-            stmt.setString(2, jugador.getNombre());
+            stmt.setString(1, jugador.getNombre()); // Establecer el nombre
+            stmt.setInt(2, jugador.getId()); // Establecer el ID del jugador para asegurar que es el correcto
             stmt.executeUpdate();
         }
+
+
+        System.out.println("Jugador actualizado");
+
+
+         query = "SELECT * FROM jugadores WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, jugador.getId());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                System.out.println("Jugador encontrado: " + rs.getString("nombre"));
+            } else {
+                System.out.println("Jugador no encontrado con el ID: " + jugador.getId());
+            }
+        }
+
     }
 
 
@@ -241,6 +257,59 @@ public class JugadorDao {
                 System.out.println("No se encontró un jugador con el ID " + id);
             }
         }
+    }
+
+
+    // Método para obtener los jugadores ordenados por nombre
+    public void ordenadosPorNombre_online() throws SQLException {
+        String query = "SELECT * FROM jugadores ORDER BY nombre ASC"; // Ordenar por nombre de manera ascendente
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                // Aquí puedes obtener más campos si los necesitas, por ejemplo:
+                // String otroCampo = rs.getString("campo");
+
+                System.out.println("ID: " + id + ", Nombre: " + nombre);
+            }
+        }
+    }
+
+
+    public List<Jugador> getJugadores() throws SQLException {
+        List<Jugador> jugadores = new ArrayList<>();
+        String query = "SELECT * FROM jugadores";
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+              
+                Jugador jugador = new Jugador();
+             
+                jugador.setId(rs.getInt("id"));
+                jugador.setNombre(rs.getString("nombre"));
+                jugadores.add(jugador);
+            }
+        }
+        return jugadores;
+    }
+
+    public List<Jugador> obtenerJugadoresOrdenados_online() throws SQLException {
+        String sql = "SELECT * FROM jugadores ORDER BY nombre ASC";
+        List<Jugador> lista = new ArrayList<>();
+        try (Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                Jugador j = new Jugador(); // usa el constructor vacío
+                j.setId(rs.getInt("id")); // asigna el id
+                j.setNombre(rs.getString("nombre")); // asigna el nombre
+                j.setPuntos(rs.getDouble("puntos")); // asigna los puntos
+                lista.add(j);
+            }
+        }
+        return lista;
     }
 
 }

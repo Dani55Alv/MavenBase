@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.base.App;
@@ -26,6 +28,8 @@ import util.DatabaseConnector;
 public class CuartaController {
 
   @FXML
+  private TableColumn<Jugador, String> nombreColumn;
+  @FXML
   private TableView<Jugador> tablaJugadoresONLINE;
   @FXML
   private TableColumn<Jugador, Integer> colIdOnline;
@@ -33,6 +37,27 @@ public class CuartaController {
   private TableColumn<Jugador, String> colNombreOnline;
   @FXML
   private TableColumn<Jugador, Double> colPuntosOnline;
+
+  @FXML
+  public void ordenarTablaPorNombre() {
+    // Asegúrate de que la columna esté configurada para ser ordenable
+    colNombreOnline.setSortable(true);
+
+    // Ordenar la lista de jugadores por nombre
+    jugadoresList.sort(Comparator.comparing(Jugador::getNombre)); // Ordena directamente la lista observable
+
+    // Recargar los elementos de la tabla
+    tablaJugadoresONLINE.setItems(jugadoresList); // Vuelve a asignar la lista ordenada
+
+    // Visualmente marcar la columna como ordenada
+    tablaJugadoresONLINE.getSortOrder().clear(); // Limpiar cualquier columna previamente ordenada
+    tablaJugadoresONLINE.getSortOrder().add(colNombreOnline); // Establecer la columna como ordenada
+
+    // Forzar actualización visual de la tabla
+    tablaJugadoresONLINE.refresh();
+
+    System.out.println("Online ordenado");
+  }
 
   public void actualizarTablaJugadores_bd() {
     try {
@@ -80,8 +105,10 @@ public class CuartaController {
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
 
       // Cargar los datos en la tabla
-      ObservableList<Jugador> lista = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
-      tablaJugadoresONLINE.setItems(lista);
+      colNombreOnline.setSortable(true);
+
+      jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+      tablaJugadoresONLINE.setItems(jugadoresList);
 
       System.out.println("Tabla recargada");
 
@@ -133,6 +160,26 @@ public class CuartaController {
   // Método que se llamará para cargar los jugadores en la tabla
   public void cargarJugadores(ObservableList<Jugador> jugadores) {
     jugadoresList.setAll(jugadores); // Actualiza la lista de jugadores en la tabla
+  }
+
+  @FXML
+  public void ordenarTablaPorNombre2() throws SQLException {
+    // 1) Obtén la lista ordenada de la BD
+    List<Jugador> ordenada = jugadorDao.obtenerJugadoresOrdenados_online();
+    // 2) Crea el ObservableList y lo asignas a la tabla
+    ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
+    tablaJugadoresONLINE.setItems(obs);
+
+
+    tablaJugadoresONLINE.getSortOrder().clear();
+    tablaJugadoresONLINE.getSortOrder().add(colNombreOnline);
+    tablaJugadoresONLINE.sort(); // <- fuerza el ordenamiento del control
+    tablaJugadoresONLINE.refresh();
+
+    // 3) Marca la columna como ordenada (opcional, mejora UX)
+    tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
+    // 4) Refresca la tabla
+    tablaJugadoresONLINE.refresh();
   }
 
 }
