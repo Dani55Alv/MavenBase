@@ -84,33 +84,46 @@ public class CuartaController {
 
   private JugadorDao jugadorDao;
 
+  private static boolean mostrarOrdenado = false;
+
+  public static void setMostrarOrdenado(boolean ordenado) {
+    mostrarOrdenado = ordenado;
+  }
+
   @FXML
   private void initialize() {
     try {
-      Connection conn = DatabaseConnector.conectar(); // <- Usamos la conexión centralizada
+      Connection conn = DatabaseConnector.conectar();
       jugadorDao = new JugadorDao(conn);
 
-      // Verificar o crear la tabla si no existe
+      // Crear tabla si no existe
       String createTableQuery = "CREATE TABLE IF NOT EXISTS jugadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, puntos REAL)";
       try (Statement stmt = conn.createStatement()) {
         stmt.executeUpdate(createTableQuery);
         System.out.println("Tabla 'jugadores' verificada/creada correctamente.");
-      } catch (SQLException e) {
-        e.printStackTrace();
       }
 
-      // Configurar las columnas
+      // Configurar columnas
       colIdOnline.setCellValueFactory(new PropertyValueFactory<>("id"));
       colNombreOnline.setCellValueFactory(new PropertyValueFactory<>("nombre"));
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
-
-      // Cargar los datos en la tabla
       colNombreOnline.setSortable(true);
 
-      jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
-      tablaJugadoresONLINE.setItems(jugadoresList);
+      // Cargar datos ordenados o no, según bandera
+      if (mostrarOrdenado) {
+        System.out.println("Cargando jugadores ORDENADOS por nombre...");
+        jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresOrdenados_online());
+        mostrarOrdenado = false; // volver a false para próximos usos
+      } else {
+        System.out.println("Cargando jugadores sin orden específico...");
+        jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+      }
 
-      System.out.println("Tabla recargada");
+      tablaJugadoresONLINE.setItems(jugadoresList);
+      tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
+      tablaJugadoresONLINE.sort();
+
+      System.out.println("Tabla cargada");
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -164,22 +177,23 @@ public class CuartaController {
 
   @FXML
   public void ordenarTablaPorNombre2() throws SQLException {
-    // 1) Obtén la lista ordenada de la BD
     List<Jugador> ordenada = jugadorDao.obtenerJugadoresOrdenados_online();
-    // 2) Crea el ObservableList y lo asignas a la tabla
     ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
     tablaJugadoresONLINE.setItems(obs);
-
-
-    tablaJugadoresONLINE.getSortOrder().clear();
-    tablaJugadoresONLINE.getSortOrder().add(colNombreOnline);
-    tablaJugadoresONLINE.sort(); // <- fuerza el ordenamiento del control
-    tablaJugadoresONLINE.refresh();
-
-    // 3) Marca la columna como ordenada (opcional, mejora UX)
     tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
-    // 4) Refresca la tabla
+    tablaJugadoresONLINE.sort();
     tablaJugadoresONLINE.refresh();
+    System.out.println("Tabla ordenada y refrescada correctamente.");
+
+  }
+
+  public void cargarJugadoresOrdenados() throws SQLException {
+    // NO invocar initialize ni el método genérico
+    List<Jugador> ordenada = jugadorDao.obtenerJugadoresOrdenados_online();
+    ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
+    tablaJugadoresONLINE.setItems(obs);
+    tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
+    tablaJugadoresONLINE.sort();
   }
 
 }

@@ -19,67 +19,65 @@ public class App extends Application {
 
     private static Scene scene;
 
-    // Guardamos las raíces y controladores
+    // Guardamos las raíces
     private static Parent secondaryRoot;
     private static Parent tertiaryRoot;
+    private static Parent cuartaRoot;
     private static Parent quintaRoot;
 
+    // Guardamos los controladores
     private static SecondaryController secondaryController;
     private static TertiaryController tertiaryController;
-    private static Parent cuartaRoot;
-    private static QuintaController quintaController;
     private static CuartaController cuartaController;
+    private static QuintaController quintaController;
 
     @Override
     public void start(Stage stage) throws IOException {
-
         // Cargar secondary.fxml
-        FXMLLoader loaderSecondary = new FXMLLoader(App.class.getResource("/Vistas/secondary.fxml"));
+        FXMLLoader loaderSecondary = new FXMLLoader(getClass().getResource("/Vistas/secondary.fxml"));
         secondaryRoot = loaderSecondary.load();
         secondaryController = loaderSecondary.getController();
 
         // Cargar tertiary.fxml
-        FXMLLoader loaderTertiary = new FXMLLoader(App.class.getResource("/Vistas/tertiary.fxml"));
+        FXMLLoader loaderTertiary = new FXMLLoader(getClass().getResource("/Vistas/tertiary.fxml"));
         tertiaryRoot = loaderTertiary.load();
         tertiaryController = loaderTertiary.getController();
 
         // Cargar cuarta.fxml
-        FXMLLoader loaderCuarta = new FXMLLoader(App.class.getResource("/Vistas/cuarta.fxml"));
+        FXMLLoader loaderCuarta = new FXMLLoader(getClass().getResource("/Vistas/cuarta.fxml"));
         cuartaRoot = loaderCuarta.load();
         cuartaController = loaderCuarta.getController();
 
         // Cargar quinta.fxml
-        FXMLLoader loaderQuinta = new FXMLLoader(App.class.getResource("/Vistas/quinta.fxml"));
+        FXMLLoader loaderQuinta = new FXMLLoader(getClass().getResource("/Vistas/quinta.fxml"));
         quintaRoot = loaderQuinta.load();
         quintaController = loaderQuinta.getController();
 
-        // Pasar la referencia de CuartaController
+        // Enlazar controladores
         quintaController.setCuartaController(cuartaController);
-
-        // Enlazar los controladores
         tertiaryController.setSecondaryController(secondaryController);
 
-        // Cargar la escena inicial
-        scene = new Scene(loadFXML("/Vistas/primary"), 640, 480);
+        // Escena inicial
+        scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setTitle("Come_cocos");
         stage.setScene(scene);
         stage.show();
     }
 
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML("/Vistas/" + fxml));
-    }
-
     private static Parent loadFXML(String fxml) throws IOException {
-        URL fxmlLocation = App.class.getResource(fxml + ".fxml");
+        URL fxmlLocation = App.class.getResource("/Vistas/" + fxml + ".fxml");
         if (fxmlLocation == null) {
-            throw new IllegalStateException("No se encontró el archivo FXML: " + fxml + ".fxml");
+            throw new IllegalStateException("No se encontró el archivo FXML: " + fxml);
         }
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlLocation);
-        return fxmlLoader.load();
+        FXMLLoader loader = new FXMLLoader(fxmlLocation);
+        return loader.load();
     }
 
-    // NUEVOS MÉTODOS para cambiar a secondary y tertiary sin recargar
+    public static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    }
+
+    // Métodos para cambiar vistas sin recargar
     public static void showSecondary() {
         scene.setRoot(secondaryRoot);
     }
@@ -88,13 +86,17 @@ public class App extends Application {
         scene.setRoot(tertiaryRoot);
     }
 
-    // Mas pasos de vistas sin recargar
     public static void showCuarta() {
         scene.setRoot(cuartaRoot);
     }
 
     public static void showQuinta() {
         scene.setRoot(quintaRoot);
+    }
+
+    // Nuevo getter para el controlador de Cuarta
+    public static CuartaController getCuartaController() {
+        return cuartaController;
     }
 
     public static void main(String[] args) {

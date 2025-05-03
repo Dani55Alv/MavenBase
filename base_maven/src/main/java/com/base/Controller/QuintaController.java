@@ -127,23 +127,18 @@ public class QuintaController {
 
   @FXML
   private void ordenarNombreAlfabeticamente_online_evento() {
-     try {
-    // 1) Cargo de nuevo la vista cuarta.fxml y obtengo su controlador
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/cuarta.fxml"));
-    Parent root = loader.load();
-    CuartaController ctrl = loader.getController();
+    try {
+      // Obtener el controlador real cargado al inicio
+      CuartaController ctrl = App.getCuartaController();
 
-    // 2) Llamo directamente al método de ese controlador
-    ctrl.ordenarTablaPorNombre2();
+      // Usar el método ya preparado para ordenar
+      ctrl.cargarJugadoresOrdenados(); // esto modifica los datos en la tabla
 
-    // 3) Muestro la UI (ó bien reemplazo la actual ventana, según tu flujo)
-    Stage stage = new Stage();
-    stage.setScene(new Scene(root));
-    stage.show();
+      System.out.println("Jugadores ordenados. Cuando entres a la vista, verás la tabla lista.");
 
-  } catch (IOException | SQLException e) {
-    e.printStackTrace();
-  }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
 }
