@@ -21,7 +21,7 @@
       <Label text="Opciones:" />
 
 
-      <HBox spacing="10" alignment="CENTER"  maxWidth="350"
+      <HBox spacing="10" alignment="CENTER" maxWidth="350"
          style="
           -fx-border-color: black;  /* top, right, bottom, left */
           -fx-border-width: 5 5 5 5;                 /* top, right, bottom, left */

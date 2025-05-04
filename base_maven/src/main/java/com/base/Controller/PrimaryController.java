@@ -46,7 +46,7 @@ public class PrimaryController {
     // conectando a la base de datos
 
     @FXML
-    private void inicializarBaseDeDatos_Boton_online() {
+    private void irACuartaVista() {
         String sql = "CREATE TABLE IF NOT EXISTS jugadores (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, puntos INTEGER NOT NULL)";
         try (Connection conn = DatabaseConnector.conectar()) {
             // Verificar si la conexión fue exitosa
@@ -72,8 +72,6 @@ public class PrimaryController {
                     System.out.println("La tabla 'jugadores' no existe.");
                 }
             }
-
-
 
             // Cambiar la vista dentro de la misma ventana
             App.setRoot("cuarta");

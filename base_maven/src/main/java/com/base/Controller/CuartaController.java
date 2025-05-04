@@ -84,11 +84,9 @@ public class CuartaController {
 
   private JugadorDao jugadorDao;
 
-  private static boolean mostrarOrdenado = false;
-
-  public static void setMostrarOrdenado(boolean ordenado) {
-    mostrarOrdenado = ordenado;
-  }
+  
+  
+  public static boolean cargarOrdenado = false;
 
   @FXML
   private void initialize() {
@@ -109,20 +107,15 @@ public class CuartaController {
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
       colNombreOnline.setSortable(true);
 
-      // Cargar datos ordenados o no, según bandera
-      if (mostrarOrdenado) {
-        System.out.println("Cargando jugadores ORDENADOS por nombre...");
+      // Cargar según la bandera estática
+      if (cargarOrdenado) {
         jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresOrdenados_online());
-        mostrarOrdenado = false; // volver a false para próximos usos
+        //cargarOrdenado = false; // Resetear para futuras cargas
       } else {
-        System.out.println("Cargando jugadores sin orden específico...");
         jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
       }
 
       tablaJugadoresONLINE.setItems(jugadoresList);
-      tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
-      tablaJugadoresONLINE.sort();
-
       System.out.println("Tabla cargada");
 
     } catch (SQLException e) {

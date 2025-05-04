@@ -174,6 +174,7 @@ public class JugadorDao {
 
     // Método para obtener todos los jugadores
     public List<Jugador> obtenerJugadores_online() throws SQLException {
+
         List<Jugador> jugadores = new ArrayList<>();
         String query = "SELECT * FROM jugadores"; // Ajusta esto según tu tabla
         try (Statement stmt = connection.createStatement();
@@ -192,7 +193,6 @@ public class JugadorDao {
 
     }
 
-    // Método para insertar un jugador
     public void insertarJugador_online(Jugador jugador) throws SQLException {
         String query = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";
 
@@ -200,48 +200,42 @@ public class JugadorDao {
             stmt.setString(1, jugador.getNombre());
             stmt.setDouble(2, jugador.getPuntos());
 
-            // Ejecutar la inserción
             stmt.executeUpdate();
-            System.out.println("Jugador insertado");
 
-            try (Statement idStmt = connection.createStatement();
-                    ResultSet rs = idStmt.executeQuery("SELECT last_insert_rowid()")) {
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    jugador.setId(id);
-                    System.out.println("Jugador insertado con id (manual): " + id);
+            // Obtener el ID generado automáticamente de la misma ejecución
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int idGenerado = generatedKeys.getInt(1);
+                    jugador.setId(idGenerado); // ← asignamos el id real al objeto
+                    System.out.println("Jugador insertado con ID real: " + idGenerado);
                 }
             }
-
         }
     }
 
     // Método para actualizar el nombre de un jugador
+    // Método para actualizar el nombre de un jugador
     public void actualizarJugador_online(Jugador jugador) throws SQLException {
+        System.out.println("Actualizando jugador con ID: " + jugador.getId()); // Depuración
         String query = "UPDATE jugadores SET nombre = ? WHERE id = ?";
+
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, jugador.getNombre()); // Establecer el nombre
-            stmt.setInt(2, jugador.getId()); // Establecer el ID del jugador para asegurar que es el correcto
-            stmt.executeUpdate();
-        }
+            stmt.setString(1, jugador.getNombre());
+            stmt.setInt(2, jugador.getId());
 
+            // Verificación adicional antes de ejecutar
+            System.out.println("ID del jugador en el PreparedStatement: " + jugador.getId());
 
-        System.out.println("Jugador actualizado");
+            int rowsAffected = stmt.executeUpdate();
 
-
-         query = "SELECT * FROM jugadores WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, jugador.getId());
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                System.out.println("Jugador encontrado: " + rs.getString("nombre"));
+            System.out.println("Filas afectadas: " + rowsAffected);
+            if (rowsAffected > 0) {
+                System.out.println("Jugador actualizado correctamente.");
             } else {
-                System.out.println("Jugador no encontrado con el ID: " + jugador.getId());
+                System.out.println("No se encontró un jugador con el ID: " + jugador.getId());
             }
         }
-
     }
-
 
     // Método para eliminar un jugador por su ID
     public void eliminarJugador_online(int id) throws SQLException {
@@ -258,7 +252,6 @@ public class JugadorDao {
             }
         }
     }
-
 
     // Método para obtener los jugadores ordenados por nombre
     public void ordenadosPorNombre_online() throws SQLException {
@@ -278,16 +271,15 @@ public class JugadorDao {
         }
     }
 
-
     public List<Jugador> getJugadores() throws SQLException {
         List<Jugador> jugadores = new ArrayList<>();
         String query = "SELECT * FROM jugadores";
         try (PreparedStatement stmt = connection.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-              
+
                 Jugador jugador = new Jugador();
-             
+
                 jugador.setId(rs.getInt("id"));
                 jugador.setNombre(rs.getString("nombre"));
                 jugadores.add(jugador);

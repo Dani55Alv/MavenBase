@@ -13,7 +13,7 @@
 
 
       <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="ONLINE" onAction="#inicializarBaseDeDatos_Boton_online" />
+      <Button fx:id="primaryButton" text="ONLINE" onAction="#irACuartaVista" />
       <Label text="Primary View" />
       <Button fx:id="primaryButton2" text="OFFLINE" onAction="#switchToSecondary" />
 
@@ -21,7 +21,7 @@
       <Label text="Opciones:" />
 
 
-      <HBox spacing="10" alignment="CENTER"  maxWidth="350"
+      <HBox spacing="10" alignment="CENTER" maxWidth="350"
          style="
           -fx-border-color: black;  /* top, right, bottom, left */
           -fx-border-width: 5 5 5 5;                 /* top, right, bottom, left */

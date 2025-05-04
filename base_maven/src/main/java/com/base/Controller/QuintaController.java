@@ -103,14 +103,20 @@ public class QuintaController {
   @FXML
   private void actualizarJugador_online_evento() {
     Integer id = Integer.parseInt(idFieldActualizar.getText()); // Obtener el ID desde un TextField
-    String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField+
+    String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField
 
-    Jugador jugador_Buscar = new Jugador(nombre); // Obtener el nombre desde un TextField
+    // Ahora el jugador se crea con ambos valores, ID y nombre
+    Jugador jugador_Buscar = new Jugador(); // Asignamos ambos parámetros al crear el objeto
+jugador_Buscar.setId(id);
+jugador_Buscar.setNombre(nombre);
     try {
-      jugadorDao.actualizarJugador_online(jugador_Buscar);
-
+      jugadorDao.actualizarJugador_online(jugador_Buscar); // Llamamos al método de actualización
     } catch (SQLException e) {
+      // Manejo de excepciones (agrega un mensaje o algún tratamiento si es necesario)
+      e.printStackTrace();
     }
+
+    // Limpiar los campos después de la actualización
     idFieldActualizar.clear();
     nombreFieldActualizar.clear();
   }
@@ -127,18 +133,8 @@ public class QuintaController {
 
   @FXML
   private void ordenarNombreAlfabeticamente_online_evento() {
-    try {
-      // Obtener el controlador real cargado al inicio
-      CuartaController ctrl = App.getCuartaController();
-
-      // Usar el método ya preparado para ordenar
-      ctrl.cargarJugadoresOrdenados(); // esto modifica los datos en la tabla
-
-      System.out.println("Jugadores ordenados. Cuando entres a la vista, verás la tabla lista.");
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    CuartaController.cargarOrdenado = true;
+    System.out.println("Se ha marcado cargarOrdenado = true. Al entrar a la vista se ordenará.");
   }
 
 }

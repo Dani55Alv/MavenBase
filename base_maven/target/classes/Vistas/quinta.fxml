@@ -82,7 +82,6 @@
             </children>
         </HBox>
 
-       
 
         <!-- Botón Volver solo -->
         <VBox alignment="CENTER" spacing="10.0">
