@@ -39,30 +39,39 @@ public class TertiaryController {
     private void guardar() {
         // Llamamos al método guardar_datos() de Jugador_Dao
 
-        String ruta ="C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
-        String fichero="informacion.bin";
-        jugadorDao.grabar_datos(ruta, fichero);;
+        String ruta = "C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
+        String fichero = "informacion.bin";
+        jugadorDao.grabar_datos(ruta, fichero);
+        ;
     }
 
     @FXML
     private void recuperar() {
         String ruta = "C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
         String fichero = "informacion.bin";
-        // Llamamos al método recuperar_datos() de Jugador_Dao
-        List<Jugador> jugadoresRecuperados = jugadorDao.recuperar_datos(ruta, fichero); // Asumimos que este método devuelve una
-                                                                           // lista de jugadores
-        Jugador.actualizarContadorId(jugadoresRecuperados); // <- Aquí evitamos la repeticion de id's de juadores
 
-        // Convertimos la lista en un ObservableList
+        // Recuperamos los datos desde el fichero
+        List<Jugador> jugadoresRecuperados = jugadorDao.recuperar_datos(ruta, fichero);
+
+        // Verificamos cuántos jugadores se recuperaron
+        System.out.println("Jugadores recuperados: " + jugadoresRecuperados.size());
+
+        // Actualizamos el contador estático de ID en Jugador
+        Jugador.actualizarContadorId(jugadoresRecuperados);
+
+        // Actualizamos la estructura dinámica interna
+        jugadorDao.getListaJugadores().clear();
+        jugadorDao.getListaJugadores().addAll(jugadoresRecuperados);
+
+        System.out.println("Lista dinámica contiene: " + jugadorDao.getListaJugadores().size() + " jugadores");
+System.out.println("La lista original");
+        for (Jugador jugador : jugadoresRecuperados) {
+System.out.println(jugador);        }
+        // Creamos una ObservableList para la TableView
         ObservableList<Jugador> jugadoresList = FXCollections.observableArrayList(jugadoresRecuperados);
 
-        // Llamamos al método cargarJugadores de SecondaryController para actualizar la
-        // tabla
+        // Cargamos los jugadores en la tabla (SecondaryController)
         secondaryController.cargarJugadores(jugadoresList);
-
-        // La esctructura dinamica recarga tambien los datos
-        jugadorDao.getListaJugadores().clear();
-        jugadorDao.getListaJugadores().addAll(jugadoresList);
     }
 
     private SecondaryController secondaryController;
@@ -108,12 +117,24 @@ public class TertiaryController {
         nombreFieldAgregar.clear();
     }
 
+    
     @FXML
     private void eliminarJugador() {
-        Integer id = Integer.parseInt(idFieldEliminar.getText()); // Obtener el ID desde un TextField
-        jugadorDao.eliminarJugador(id); // Usamos el Servidor directamente
-        idFieldEliminar.clear(); // Limpia el campo de texto
+        try {
+            String input = idFieldEliminar.getText().trim();
+            if (input.isEmpty()) {
+                System.out.println("Campo de ID vacío");
+                return;
+            }
 
+            Integer id = Integer.parseInt(input);
+            System.out.println("ID ingresado desde TextField: " + id);
+
+            jugadorDao.eliminarJugador(id);
+            idFieldEliminar.clear();
+        } catch (NumberFormatException e) {
+            System.out.println("ID no válido: " + e.getMessage());
+        }
     }
 
     @FXML

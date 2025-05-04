@@ -86,30 +86,35 @@ public class JugadorDao {
     }
 
     public void eliminarJugador(Integer busquedaId) {
-        String usuario = "";
-        boolean elimimacionExitosa = false;
+        System.out.println("Jugadores en la lista antes de eliminar:");
+        for (Jugador jugador : listaJugadores) {
+            System.out.println(jugador); // Aquí sí imprime
+        }
+
+        boolean eliminado = false;
 
         Iterator<Jugador> iteradorJugador = listaJugadores.iterator();
-
         while (iteradorJugador.hasNext()) {
             Jugador jugador = iteradorJugador.next();
+            System.out.println("Comparando: jugador.id=" + jugador.getId() + " con buscado=" + busquedaId);
 
-            if (jugador.getId() == (busquedaId)) {
-                usuario = jugador.toString();
+            if (jugador.getId().equals(busquedaId)) {
+
                 iteradorJugador.remove();
-                elimimacionExitosa = true;
+                eliminado = true;
+                System.out.println("Jugador eliminado: " + jugador);
+                break;
             }
         }
 
-        if (elimimacionExitosa == true) {
-            System.out.println("Eliminacion del jugador ");
-            System.out.println(usuario);
-            System.out.println("con exito");
-        } else {
-            System.out.println("Jugador con dni: " + busquedaId + " no encontrado");
-
+        if (!eliminado) {
+            System.out.println("Jugador con id: " + busquedaId + " no encontrado");
         }
 
+        System.out.println("Jugadores en la lista después de eliminar:");
+        for (Jugador jugador : listaJugadores) {
+            System.out.println(jugador);
+        }
     }
 
     public void actualizarJugador(Integer busquedaId, String nombre) {
@@ -118,7 +123,7 @@ public class JugadorDao {
 
         boolean actualizacionExitosa = false;
         for (Jugador jugador : listaJugadores) {
-            if (jugador.getId() == (busquedaId)) {
+            if (jugador.getId().equals(busquedaId)) {
                 usuario = jugador.toString();
 
                 jugador.setNombre(nombre);
@@ -135,7 +140,7 @@ public class JugadorDao {
             System.out.println(usuarioActualizado);
             System.out.println("con exito");
         } else {
-            System.out.println("Jugador con dni: " + busquedaId + " no encontrado");
+            System.out.println("Jugador con id: " + busquedaId + " no encontrado");
 
         }
 

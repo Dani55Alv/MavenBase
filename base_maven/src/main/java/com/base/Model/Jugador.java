@@ -45,7 +45,7 @@ public class Jugador implements Serializable {
 
         // Si la lista está vacía, volvemos al valor inicial del contador
         if (jugadores == null || jugadores.isEmpty()) {
-            contadorId = 1001;
+            contadorId = 0;
         } else {
             int maxId = jugadores.get(0).id; // Asumimos que hay al menos un jugador
             // Recorremos la lista para encontrar el ID más alto
