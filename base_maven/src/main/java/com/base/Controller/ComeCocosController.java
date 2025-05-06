@@ -11,19 +11,18 @@ import com.base.App;
 import com.base.Tablero;
 import com.base.DAO.JugadorDao;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 public class ComeCocosController {
-
-    private boolean esOnline = false;
-
-    public void setModoOnline(boolean esOnline) {
-        this.esOnline = esOnline;
-    }
 
     private Tablero tablero;
     private Jugador jugador;
@@ -76,6 +75,9 @@ public class ComeCocosController {
             tablero.setCelda(posX, posY, '-');
             posY++;
             ganarPuntos();
+
+            // Llamamos al método de la vista para que muestre el spray
+            // vista.mostrarSpray(posX, posY);
 
             tablero.setCelda(posX, posY, 'C');
             tablero.regenerarPuntos(5);
@@ -150,7 +152,7 @@ public class ComeCocosController {
         puntosEid.add(jugador.getId());
         puntosEid.add(jugador.getPuntos());
         System.out.println("Puntos actualizados obtenidos al cerrar ventana");
-System.out.println(puntosEid.size());
+        System.out.println(puntosEid.size());
         return puntosEid;
     }
 

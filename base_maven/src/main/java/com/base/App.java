@@ -59,6 +59,8 @@ public class App extends Application {
 
         // Escena inicial
         scene = new Scene(loadFXML("primary"), 640, 480);
+        // scene.getStylesheets().add(getClass().getResource("/css/estilo.css").toExternalForm());
+
         stage.setTitle("Come_cocos");
         stage.setScene(scene);
         stage.show();

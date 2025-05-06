@@ -1,0 +1,4 @@
+/* Definir un fondo lila para todo el VBox */
+.root {
+    -fx-background-color: #D8A7E6;  /* Color lila */
+}
