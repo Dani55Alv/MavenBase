@@ -64,9 +64,10 @@ public class TertiaryController {
         jugadorDao.getListaJugadores().addAll(jugadoresRecuperados);
 
         System.out.println("Lista dinámica contiene: " + jugadorDao.getListaJugadores().size() + " jugadores");
-System.out.println("La lista original");
+        System.out.println("La lista original");
         for (Jugador jugador : jugadoresRecuperados) {
-System.out.println(jugador);        }
+            System.out.println(jugador);
+        }
         // Creamos una ObservableList para la TableView
         ObservableList<Jugador> jugadoresList = FXCollections.observableArrayList(jugadoresRecuperados);
 
@@ -117,7 +118,6 @@ System.out.println(jugador);        }
         nombreFieldAgregar.clear();
     }
 
-    
     @FXML
     private void eliminarJugador() {
         try {
@@ -156,6 +156,12 @@ System.out.println(jugador);        }
     }
 
 
-   
+    @FXML
+    private Button ORP;
 
+    @FXML
+    private void ordenarNombrePuntos() {
+
+        jugadorDao.ordenarNombrePuntos();
+    }
 }

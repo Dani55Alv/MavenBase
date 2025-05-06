@@ -59,25 +59,24 @@ public class SecondaryController {
         // Llamar a iniciarComeCocos con el jugador seleccionado
         iniciarComeCocos(jugadorSeleccionado);
       }
-      
+
     });
 
   }
 
+  public void actualizarPuntosDesdeJuego(ComeCocosController controladorJuego) {
+    List<Object> datos = controladorJuego.getPuntosEid();
 
-
-   public void actualizarPuntosDesdeJuego(ComeCocosController controladorJuego) {
-        List<Object> datos = controladorJuego.getPuntosEid();
-
-        Integer id = (Integer) datos.get(0);
-        Double nuevosPuntos = (Double) datos.get(1);
-JugadorDao jugadorDao = new JugadorDao("Dao");
-jugadorDao.setListaJugadores(jugadoresList);
-       jugadorDao.actualizarJugadorPuntos(id, nuevosPuntos);
-System.out.println("Se actualizaron los puntos");
-        // Si estás usando TableView y quieres forzar actualización:
+    Integer id = (Integer) datos.get(0);
+    Double nuevosPuntos = (Double) datos.get(1);
+    JugadorDao jugadorDao = new JugadorDao("Dao");
+    jugadorDao.setListaJugadores(jugadoresList);
+    jugadorDao.actualizarJugadorPuntos(id, nuevosPuntos);
+    System.out.println("Se actualizaron los puntos");
+    // Si estás usando TableView y quieres forzar actualización:
     tablaJugadores.refresh(); // si la tabla se llama así
-    }
+  }
+
   // Método para iniciar el juego ComeCocos
   @FXML
   private void iniciarComeCocos(Jugador jugador) {
@@ -102,7 +101,7 @@ System.out.println("Se actualizaron los puntos");
         actualizarPuntosDesdeJuego(controller);
       });
       stage.show();
-actualizarPuntosDesdeJuego(controller);
+      // actualizarPuntosDesdeJuego(controller);
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -114,7 +113,4 @@ actualizarPuntosDesdeJuego(controller);
     jugadoresList.setAll(jugadores); // Actualiza la lista de jugadores en la tabla
   }
 
-
-
-  
 }

@@ -68,7 +68,8 @@
                 <VBox alignment="CENTER">
                     <children>
                         <Label text="Ordenar por puntos" />
-                        <Button fx:id="ORP" text="Ordenar" />
+                        <Button fx:id="ORP_online" text="Ordenar"
+                            onAction="#ordenarNombrePuntos_online_evento" />
                     </children>
                 </VBox>
 

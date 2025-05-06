@@ -107,8 +107,8 @@ public class QuintaController {
 
     // Ahora el jugador se crea con ambos valores, ID y nombre
     Jugador jugador_Buscar = new Jugador(); // Asignamos ambos parámetros al crear el objeto
-jugador_Buscar.setId(id);
-jugador_Buscar.setNombre(nombre);
+    jugador_Buscar.setId(id);
+    jugador_Buscar.setNombre(nombre);
     try {
       jugadorDao.actualizarJugador_online(jugador_Buscar); // Llamamos al método de actualización
     } catch (SQLException e) {
@@ -133,8 +133,16 @@ jugador_Buscar.setNombre(nombre);
 
   @FXML
   private void ordenarNombreAlfabeticamente_online_evento() {
-    CuartaController.cargarOrdenado = true;
-    System.out.println("Se ha marcado cargarOrdenado = true. Al entrar a la vista se ordenará.");
+    CuartaController.opcionOrdenacion = 1;
+    System.out.println("Se ha marcado cargarOrdenado = 1. Al entrar a la vista se ordenará por nombre.");
   }
 
+  @FXML
+  private Button ORP_online;
+
+  @FXML
+  private void ordenarNombrePuntos_online_evento() {
+    CuartaController.opcionOrdenacion = 2;
+    System.out.println("Se ha marcado cargarOrdenado = 2. Al entrar a la vista se ordenará por puntos.");
+  }
 }

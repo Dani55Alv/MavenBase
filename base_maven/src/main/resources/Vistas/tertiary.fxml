@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TextField?>  
+<?import javafx.scene.control.TextField?>
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
@@ -33,14 +33,17 @@
                     <children>
                         <Label text="Actualizar jugadores (El id no)" />
                         <!-- Campo de texto para el ID del jugador -->
-                        <TextField fx:id="idFieldActualizar" promptText="Introduce el ID del jugador" />
+                        <TextField fx:id="idFieldActualizar"
+                            promptText="Introduce el ID del jugador" />
 
                         <!-- Campo de texto para el nuevo nombre del jugador -->
-                        <TextField fx:id="nombreFieldActualizar" promptText="Introduce el nuevo nombre" />
+                        <TextField fx:id="nombreFieldActualizar"
+                            promptText="Introduce el nuevo nombre" />
 
                         <!-- Botón para actualizar el jugador, vinculado al método
                         'actualizarJugador' -->
-                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador" />                    </children>
+                        <Button fx:id="Actualizar" text="Actualizar" onAction="#actualizarJugador" />
+                    </children>
                 </VBox>
 
                 <VBox alignment="CENTER">
@@ -51,7 +54,7 @@
                         <TextField fx:id="idFieldEliminar" promptText="Introduce el ID" />
 
                         <!-- Botón para eliminar el jugador, vinculado al método 'eliminarJugador' -->
-                        <Button fx:id="Eliminar" text="Eliminar" onAction="#eliminarJugador" />                   
+                        <Button fx:id="Eliminar" text="Eliminar" onAction="#eliminarJugador" />
                     </children>
                 </VBox>
             </children>
@@ -63,7 +66,7 @@
                 <VBox alignment="CENTER">
                     <children>
                         <Label text="Ordenar por puntos" />
-                        <Button fx:id="ORP" text="Ordenar" />
+                        <Button fx:id="ORP" text="Ordenar" onAction="#ordenarNombrePuntos" />
                     </children>
                 </VBox>
 

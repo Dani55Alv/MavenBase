@@ -84,9 +84,7 @@ public class CuartaController {
 
   private JugadorDao jugadorDao;
 
-  
-  
-  public static boolean cargarOrdenado = false;
+  public static int opcionOrdenacion = 0;
 
   @FXML
   private void initialize() {
@@ -107,17 +105,28 @@ public class CuartaController {
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
       colNombreOnline.setSortable(true);
 
-      // Cargar según la bandera estática
-      if (cargarOrdenado) {
-        jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresOrdenados_online());
-        //cargarOrdenado = false; // Resetear para futuras cargas
-      } else {
-        jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+      switch (opcionOrdenacion) {
+        case 0:
+          jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+
+          break;
+
+        case 1:
+          jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresNombresOrdenados_online());
+
+          break;
+
+        case 2:
+          jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresPuntosOrdenados_online());
+
+          break;
+
+        default:
+          break;
       }
 
       tablaJugadoresONLINE.setItems(jugadoresList);
       System.out.println("Tabla cargada");
-
 
       // Configurar el listener para la selección de un jugador
       tablaJugadoresONLINE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -148,26 +157,28 @@ public class CuartaController {
     }
   }
 
-  // Método para iniciar el juego ComeCocos
   @FXML
   private void iniciarComeCocos(Jugador jugador) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/come_cocos.fxml"));
-      if (loader.getLocation() == null) {
-        System.out.println("No se pudo cargar el archivo FXML. Revisa la ruta.");
-        return;
-      }
       Parent root = loader.load();
 
       // Obtener el controlador de la ventana de ComeCocos y pasar el jugador
       ComeCocosController controller = loader.getController();
       controller.setJugador(jugador); // Establecer el jugador en el controlador de ComeCocos
 
-      // Crear una nueva ventana (Stage) y mostrarla
+      // Crear una nueva ventana (Stage)
       Stage stage = new Stage();
       stage.setTitle("ComeCocos");
       stage.setScene(new Scene(root));
+
+      // ✅ Al cerrar la ventana, actualizar puntos
+      stage.setOnHidden(event -> {
+        actualizarPuntosDesdeJuego(controller);
+      });
+
       stage.show();
+      // actualizarPuntosDesdeJuego(controller);
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -181,7 +192,7 @@ public class CuartaController {
 
   @FXML
   public void ordenarTablaPorNombre2() throws SQLException {
-    List<Jugador> ordenada = jugadorDao.obtenerJugadoresOrdenados_online();
+    List<Jugador> ordenada = jugadorDao.obtenerJugadoresNombresOrdenados_online();
     ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
     tablaJugadoresONLINE.setItems(obs);
     tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
@@ -193,11 +204,42 @@ public class CuartaController {
 
   public void cargarJugadoresOrdenados() throws SQLException {
     // NO invocar initialize ni el método genérico
-    List<Jugador> ordenada = jugadorDao.obtenerJugadoresOrdenados_online();
+    List<Jugador> ordenada = jugadorDao.obtenerJugadoresNombresOrdenados_online();
     ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
     tablaJugadoresONLINE.setItems(obs);
     tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
     tablaJugadoresONLINE.sort();
   }
 
+  public void actualizarPuntosDesdeJuego(ComeCocosController controladorJuego) {
+    List<Object> datos = controladorJuego.getPuntosEid();
+
+    Integer id = (Integer) datos.get(0);
+    Double nuevosPuntos = (Double) datos.get(1);
+    Connection conn = DatabaseConnector.conectar(); // Importante la funcion de conectarse a la base de datos
+    // con el constructor de la base de datos de JugadorDao.java
+    JugadorDao jugadorDao = new JugadorDao(conn);
+    jugadorDao.setListaJugadores(jugadoresList);
+    Jugador jugador = new Jugador();
+
+    for (Jugador jugadores : jugadoresList) {
+      if (jugadores.getId().equals(id)) {
+        jugador = jugadores;
+      }
+    }
+
+    jugador.setPuntos(nuevosPuntos);
+    try {
+      jugadorDao.actualizarJugadorPuntos_online(jugador);
+
+    } catch (Exception e) {
+
+      e.printStackTrace();
+      System.out.println("Error consulta actualizar puntos");
+    }
+    System.out.println("Se actualizaron los puntos");
+    // Si estás usando TableView y quieres forzar actualización:
+    tablaJugadoresONLINE.refresh(); // si la tabla se llama así
+
+  }
 }

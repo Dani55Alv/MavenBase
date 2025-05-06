@@ -94,11 +94,6 @@ public class App extends Application {
         scene.setRoot(quintaRoot);
     }
 
-    // Nuevo getter para el controlador de Cuarta
-    public static CuartaController getCuartaController() {
-        return cuartaController;
-    }
-
     public static void main(String[] args) {
         launch();
     }

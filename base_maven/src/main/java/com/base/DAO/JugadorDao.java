@@ -178,6 +178,7 @@ public class JugadorDao {
         }
 
     }
+
     public void ordenarNombreAlfabeticamente() {
         boolean noHayJugadores = true;
         for (Jugador jugador : listaJugadores) {
@@ -189,6 +190,25 @@ public class JugadorDao {
         } else {
             Comparator<Jugador> comparadorNombre = Comparator.comparing(Jugador::getNombre);
             listaJugadores.sort(comparadorNombre);
+
+            for (Jugador jugadores : listaJugadores) {
+                System.out.println(jugadores);
+            }
+
+        }
+    }
+
+    public void ordenarNombrePuntos() {
+        boolean noHayJugadores = true;
+        for (Jugador jugador : listaJugadores) {
+            noHayJugadores = false;
+        }
+
+        if (noHayJugadores) {
+            System.out.println("NO HAY JUGADORES QUE MOSTRAR");
+        } else {
+            Comparator<Jugador> comparadorPuntos = Comparator.comparing(Jugador::getPuntos);
+            listaJugadores.sort(comparadorPuntos);
 
             for (Jugador jugadores : listaJugadores) {
                 System.out.println(jugadores);
@@ -274,6 +294,28 @@ public class JugadorDao {
         }
     }
 
+    public void actualizarJugadorPuntos_online(Jugador jugador) throws SQLException {
+        System.out.println("Actualizando jugador con ID: " + jugador.getId()); // Depuración
+        String query = "UPDATE jugadores SET puntos = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDouble(1, jugador.getPuntos());
+            stmt.setInt(2, jugador.getId());
+
+            // Verificación adicional antes de ejecutar
+            System.out.println("ID del jugador en el PreparedStatement: " + jugador.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println("Filas afectadas: " + rowsAffected);
+            if (rowsAffected > 0) {
+                System.out.println("Jugador actualizado correctamente.");
+            } else {
+                System.out.println("No se encontró un jugador con el ID: " + jugador.getId());
+            }
+        }
+    }
+
     // Método para eliminar un jugador por su ID
     public void eliminarJugador_online(int id) throws SQLException {
         String query = "DELETE FROM jugadores WHERE id = ?";
@@ -308,6 +350,24 @@ public class JugadorDao {
         }
     }
 
+    // Método para obtener los jugadores ordenados por puntos
+    public void ordenadosPorPuntos_online() throws SQLException {
+        String query = "SELECT * FROM jugadores ORDER BY puntos ASC"; // Ordenar por nombre de manera ascendente
+
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                // Aquí puedes obtener más campos si los necesitas, por ejemplo:
+                // String otroCampo = rs.getString("campo");
+
+                System.out.println("ID: " + id + ", Nombre: " + nombre);
+            }
+        }
+    }
+
     public List<Jugador> getJugadores() throws SQLException {
         List<Jugador> jugadores = new ArrayList<>();
         String query = "SELECT * FROM jugadores";
@@ -325,8 +385,24 @@ public class JugadorDao {
         return jugadores;
     }
 
-    public List<Jugador> obtenerJugadoresOrdenados_online() throws SQLException {
+    public List<Jugador> obtenerJugadoresNombresOrdenados_online() throws SQLException {
         String sql = "SELECT * FROM jugadores ORDER BY nombre ASC";
+        List<Jugador> lista = new ArrayList<>();
+        try (Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                Jugador j = new Jugador(); // usa el constructor vacío
+                j.setId(rs.getInt("id")); // asigna el id
+                j.setNombre(rs.getString("nombre")); // asigna el nombre
+                j.setPuntos(rs.getDouble("puntos")); // asigna los puntos
+                lista.add(j);
+            }
+        }
+        return lista;
+    }
+
+    public List<Jugador> obtenerJugadoresPuntosOrdenados_online() throws SQLException {
+        String sql = "SELECT * FROM jugadores ORDER BY puntos ASC";
         List<Jugador> lista = new ArrayList<>();
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
