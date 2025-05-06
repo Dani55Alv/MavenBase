@@ -118,6 +118,17 @@ public class CuartaController {
       tablaJugadoresONLINE.setItems(jugadoresList);
       System.out.println("Tabla cargada");
 
+
+      // Configurar el listener para la selección de un jugador
+      tablaJugadoresONLINE.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        if (newSelection != null) {
+          Jugador jugadorSeleccionado = newSelection;
+          System.out.println("Jugador seleccionado: " + jugadorSeleccionado.getNombre());
+
+          // Llamar a iniciarComeCocos con el jugador seleccionado
+          iniciarComeCocos(jugadorSeleccionado);
+        }
+      });
     } catch (SQLException e) {
       e.printStackTrace();
     }

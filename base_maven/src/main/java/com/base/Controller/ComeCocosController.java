@@ -1,12 +1,29 @@
 package com.base.Controller;
 
 import com.base.Model.Jugador;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.base.App;
 import com.base.Tablero;
+import com.base.DAO.JugadorDao;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class ComeCocosController {
+
+    private boolean esOnline = false;
+
+    public void setModoOnline(boolean esOnline) {
+        this.esOnline = esOnline;
+    }
 
     private Tablero tablero;
     private Jugador jugador;
@@ -19,12 +36,24 @@ public class ComeCocosController {
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
         this.tablero = new Tablero(5, 5);
+
+        labelNombreJugador.setText("Jugador: " + jugador.getNombre());
+        labelPuntos.setText("Puntos: " + jugador.getPuntos());
         iniciarJuego();
     }
 
     private void iniciarJuego() {
         tablero.setCelda(posX, posY, 'C');
         actualizarVista();
+    }
+
+    private void ganarPuntos() {
+
+        if (tablero.getCelda(posX, posY) == '*') {
+            jugador.setPuntos(jugador.getPuntos() + 1); // sumamos 1 punto
+            labelPuntos.setText("Puntos: " + jugador.getPuntos()); // actualizamos la vista
+        }
+
     }
 
     private void actualizarVista() {
@@ -46,7 +75,10 @@ public class ComeCocosController {
         if (posY < 4) {
             tablero.setCelda(posX, posY, '-');
             posY++;
+            ganarPuntos();
+
             tablero.setCelda(posX, posY, 'C');
+            tablero.regenerarPuntos(5);
             actualizarVista();
         }
     }
@@ -56,7 +88,11 @@ public class ComeCocosController {
         if (posY > 0) {
             tablero.setCelda(posX, posY, '-');
             posY--;
+            ganarPuntos();
+
             tablero.setCelda(posX, posY, 'C');
+            tablero.regenerarPuntos(5);
+
             actualizarVista();
         }
     }
@@ -66,9 +102,14 @@ public class ComeCocosController {
         if (posX > 0) {
             tablero.setCelda(posX, posY, '-');
             posX--;
+            ganarPuntos();
+
             tablero.setCelda(posX, posY, 'C');
+            tablero.regenerarPuntos(5);
+
             actualizarVista();
         }
+
     }
 
     @FXML
@@ -76,8 +117,41 @@ public class ComeCocosController {
         if (posX < 4) {
             tablero.setCelda(posX, posY, '-');
             posX++;
+            ganarPuntos();
+
             tablero.setCelda(posX, posY, 'C');
+
+            tablero.regenerarPuntos(5);
+
             actualizarVista();
         }
     }
+
+    // Muestra el nombre y los puntos
+
+    @FXML
+    private Label labelNombreJugador;
+
+    @FXML
+    private Label labelPuntos;
+
+    @FXML
+    private Button cerrar_ventana;
+
+    @FXML
+    private void cerrarVentana() throws IOException {
+        cerrar_ventana.getScene().getWindow().hide();
+
+        getPuntosEid();
+    }
+
+    public List<Object> getPuntosEid() {
+        List<Object> puntosEid = new ArrayList<>();
+        puntosEid.add(jugador.getId());
+        puntosEid.add(jugador.getPuntos());
+        System.out.println("Puntos actualizados obtenidos al cerrar ventana");
+System.out.println(puntosEid.size());
+        return puntosEid;
+    }
+
 }

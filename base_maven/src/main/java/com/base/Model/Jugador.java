@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
+
 public class Jugador implements Serializable {
     private static final long serialVersionUID = -4442119677483243372L; // SerialVersionUID único para evitar erroes de
                                                                         // serializacion
@@ -59,6 +62,10 @@ public class Jugador implements Serializable {
             contadorId = maxId + 1;
         }
     }
+
+
+
+
 
     public void setId(Integer id) {
         System.out.println("ID recibido en el setter: " + id);

@@ -45,6 +45,10 @@ public class JugadorDao {
 
     }
 
+    public void setListaJugadores(List<Jugador> listaJugadores) {
+        this.listaJugadores = listaJugadores;
+    }
+
     public List<Jugador> recuperar_datos(String ruta, String fichero) {
         Path rutaDef = Paths.get(ruta, fichero);
         List<Jugador> listaRecuperar = new ArrayList<>();
@@ -146,6 +150,34 @@ public class JugadorDao {
 
     }
 
+    public void actualizarJugadorPuntos(Integer busquedaId, double puntos) {
+        String usuario = "";
+        String usuarioActualizado = "";
+
+        boolean actualizacionExitosa = false;
+        for (Jugador jugador : listaJugadores) {
+            if (jugador.getId().equals(busquedaId)) {
+                usuario = jugador.toString();
+
+                jugador.setPuntos(puntos);
+
+                usuarioActualizado = jugador.toString();
+                actualizacionExitosa = true;
+
+            }
+        }
+        if (actualizacionExitosa == true) {
+            System.out.println("Actualizacion del usuario ");
+            System.out.println(usuario);
+            System.out.println("a puntos: ");
+            System.out.println(usuarioActualizado);
+            System.out.println("con exito");
+        } else {
+            System.out.println("Jugador con id: " + busquedaId + " no encontrado");
+
+        }
+
+    }
     public void ordenarNombreAlfabeticamente() {
         boolean noHayJugadores = true;
         for (Jugador jugador : listaJugadores) {

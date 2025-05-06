@@ -18,6 +18,17 @@
         </GridPane>
     </center>
 
+    <top>
+        <HBox spacing="20" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <Label fx:id="labelNombreJugador" text="Jugador: " />
+            <Label fx:id="labelPuntos" text="Puntos: 0" />
+        </HBox>
+    </top>
+
+
     <!-- Parte inferior con los botones de control -->
     <bottom>
         <HBox spacing="15" alignment="CENTER">
@@ -29,8 +40,14 @@
                 <Button text="←" onAction="#moverIzquierda" />
                 <Button text="↓" onAction="#moverAbajo" />
                 <Button text="→" onAction="#moverDerecha" />
+
+<Button fx:id="cerrar_ventana"                    text="Volver"  onAction="#cerrarVentana" />
+
             </VBox>
+
         </HBox>
+
+
     </bottom>
 
 

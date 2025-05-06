@@ -1,8 +1,10 @@
 package com.base.Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.base.App;
+import com.base.DAO.JugadorDao;
 import com.base.Model.Jugador;
 
 import javafx.collections.FXCollections;
@@ -57,9 +59,25 @@ public class SecondaryController {
         // Llamar a iniciarComeCocos con el jugador seleccionado
         iniciarComeCocos(jugadorSeleccionado);
       }
+      
     });
+
   }
 
+
+
+   public void actualizarPuntosDesdeJuego(ComeCocosController controladorJuego) {
+        List<Object> datos = controladorJuego.getPuntosEid();
+
+        Integer id = (Integer) datos.get(0);
+        Double nuevosPuntos = (Double) datos.get(1);
+JugadorDao jugadorDao = new JugadorDao("Dao");
+jugadorDao.setListaJugadores(jugadoresList);
+       jugadorDao.actualizarJugadorPuntos(id, nuevosPuntos);
+System.out.println("Se actualizaron los puntos");
+        // Si estás usando TableView y quieres forzar actualización:
+    tablaJugadores.refresh(); // si la tabla se llama así
+    }
   // Método para iniciar el juego ComeCocos
   @FXML
   private void iniciarComeCocos(Jugador jugador) {
@@ -79,7 +97,12 @@ public class SecondaryController {
       Stage stage = new Stage();
       stage.setTitle("ComeCocos");
       stage.setScene(new Scene(root));
+      // ⚠️ Aquí agregamos la lógica para actualizar los puntos al cerrar la ventana
+      stage.setOnHidden(event -> {
+        actualizarPuntosDesdeJuego(controller);
+      });
       stage.show();
+actualizarPuntosDesdeJuego(controller);
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -91,4 +114,7 @@ public class SecondaryController {
     jugadoresList.setAll(jugadores); // Actualiza la lista de jugadores en la tabla
   }
 
+
+
+  
 }

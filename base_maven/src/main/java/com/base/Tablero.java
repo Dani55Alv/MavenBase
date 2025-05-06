@@ -8,12 +8,29 @@ public class Tablero {
         inicializarTablero();
     }
 
+    public void generarPuntos(int cantidad) {
+        
+        
+        int generados = 0;
+        while (generados < cantidad) {
+            int fila = (int) (Math.random() * tablero.length);
+            int columna = (int) (Math.random() * tablero[0].length);
+            if (tablero[fila][columna] == '-') {
+                tablero[fila][columna] = '*'; // símbolo del punto
+                generados++;
+            }
+        }
+
+    }
+
     private void inicializarTablero() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
                 tablero[i][j] = '-'; // valor por defecto
             }
         }
+        generarPuntos(5); // genera 5 puntos en el tablero
+
     }
 
     // Método para obtener el valor en la posición (fila, columna)
@@ -36,4 +53,24 @@ public class Tablero {
     }
 
     // Puedes añadir más métodos como colocarPieza(), mover(), etc.
+
+
+    public int contarPuntosRestantes() {
+        int contador = 0;
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (tablero[i][j] == '*') {
+                    contador++;
+                }
+            }
+        }
+        return contador;
+    }
+
+    public void regenerarPuntos(int cantidad) {
+        if (contarPuntosRestantes() == 0) {
+            generarPuntos(cantidad);
+        }
+    }
+
 }
