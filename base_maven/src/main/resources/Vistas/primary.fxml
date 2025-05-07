@@ -7,30 +7,25 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.base.Controller.PrimaryController"
- >
+   stylesheets="stylesheets= @/ css/ Menu.css
+">
    <children>
 
       <Label fx:id="textoBienvenida" text="Bienvenido al come cocos" />
 
 
-      <Label text="Primary View" />
+      <Label text="Modo online" />
       <Button fx:id="primaryButton" text="ONLINE" onAction="#irACuartaVista" />
-      <Label text="Primary View" />
+      <Label text="Modo offline" />
       <Button fx:id="primaryButton2" text="OFFLINE" onAction="#switchToSecondary" />
 
 
       <Label text="Opciones:" />
 
 
-      <HBox spacing="10" alignment="CENTER" maxWidth="350"
-         style="
-          -fx-border-color: black;  /* top, right, bottom, left */
-          -fx-border-width: 5 5 5 5;                 /* top, right, bottom, left */
-          -fx-border-radius: 5;                     /* bordes redondeados */
-          -fx-background-color: lightgray;           /* color del fondo */
-          -fx-padding: 5;">
-         <Button fx:id="primaryButton2" text="Administrador offline" onAction="#switchTothirdy" />
-         <Button fx:id="primaryButton3" text="Administrador online" onAction="#switchToQuinta" />
+      <HBox spacing="10" alignment="CENTER" maxWidth="350">
+         <Button fx:id="primaryButton3" text="Administrador offline" onAction="#switchTothirdy" />
+         <Button fx:id="primaryButton4" text="Administrador online" onAction="#switchToQuinta" />
          <!-- onAction="#switchToQunita"-->
       </HBox>
 

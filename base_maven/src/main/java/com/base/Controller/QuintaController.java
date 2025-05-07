@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.base.Model.Jugador;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class QuintaController {
 
@@ -73,63 +75,133 @@ public class QuintaController {
 
   @FXML
   private void insertarJugador_evento() {
+    String nombreTexto = nombreFieldAgregar.getText();
 
-    Jugador nombre = new Jugador(nombreFieldAgregar.getText()); // Obtener el nombre desde un TextField
+    // Validación antes de intentar insertar
+    if (nombreTexto.equals("")) {
+      Alert alerta = new Alert(AlertType.INFORMATION);
+      alerta.setTitle("Error");
+      alerta.setHeaderText("Alerta:");
+      alerta.setContentText("No puedes crear jugadores con nombres vacíos");
+      alerta.showAndWait();
+    } else {
+      Jugador jugador = new Jugador(nombreTexto);
 
-    try {
-      jugadorDao.insertarJugador_online(nombre); // Usamos el Servidor directamente
+      try {
+        jugadorDao.insertarJugador_online(jugador); // Inserción
+        Alert alerta2 = new Alert(AlertType.INFORMATION);
+        alerta2.setTitle("Exito");
+        alerta2.setHeaderText("Alerta");
+        alerta2.setContentText("Jugador agregado con éxito.");
+        alerta2.showAndWait();
 
-      // Llamar a actualizarTablaJugadores_bd() de CuartaController
-
-    } catch (SQLException e) {
+        // Aquí podrías llamar a actualizarTablaJugadores_bd si lo tienes
+      } catch (SQLException e) {
+        // Mostrar un mensaje de error si falla la inserción
+        Alert errorAlert = new Alert(AlertType.ERROR);
+        errorAlert.setTitle("Error en la base de datos");
+        errorAlert.setHeaderText("No se pudo agregar el jugador");
+        errorAlert.setContentText("Revisa la conexión o los datos.");
+        errorAlert.showAndWait();
+        e.printStackTrace();
+      }
     }
-    nombreFieldAgregar.clear();
+
+    nombreFieldAgregar.clear(); // Limpiar el campo después de todo
   }
 
   @FXML
   private void eliminarJugador_online_evento() {
-    Integer id = Integer.parseInt(idFieldEliminar.getText()); // Obtener el ID desde un TextField
     try {
-      jugadorDao.eliminarJugador_online(id); // Usamos el Servidor directamente
+      Integer id = Integer.parseInt(idFieldEliminar.getText()); // Obtener el ID desde un TextField
+
+      // Llamamos al método para eliminar el jugador online
+      boolean exito;
+      exito = jugadorDao.eliminarJugador_online(id);
+
+      if (!exito) {
+        // Si el ID no es un número válido
+        Alert alerta = new Alert(AlertType.INFORMATION);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Alerta");
+        alerta.setContentText("No existe el jugadon con \"" + id + "\"");
+        alerta.showAndWait();
+      }
+    } catch (NumberFormatException e) {
+      // Si el ID no es un número válido
+      Alert alerta = new Alert(AlertType.INFORMATION);
+      alerta.setTitle("Error");
+      alerta.setHeaderText("Alerta");
+      alerta.setContentText("El campo ID no es válido");
+      alerta.showAndWait();
 
     } catch (SQLException e) {
+      // Si ocurre un error al interactuar con la base de datos
+      System.out.println("Error de consulta SQL");
+      e.printStackTrace();
 
+      Alert alerta = new Alert(AlertType.ERROR);
+      alerta.setTitle("Error de base de datos");
+      alerta.setHeaderText("Alerta");
+      alerta.setContentText("No se pudo eliminar el jugador debido a un error de base de datos.");
+      alerta.showAndWait();
+
+    } finally {
+      idFieldEliminar.clear(); // Limpia el campo de texto
     }
-
-    idFieldEliminar.clear(); // Limpia el campo de texto
-
   }
 
   @FXML
   private void actualizarJugador_online_evento() {
-    Integer id = Integer.parseInt(idFieldActualizar.getText()); // Obtener el ID desde un TextField
-    String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField
-
-    // Ahora el jugador se crea con ambos valores, ID y nombre
-    Jugador jugador_Buscar = new Jugador(); // Asignamos ambos parámetros al crear el objeto
-    jugador_Buscar.setId(id);
-    jugador_Buscar.setNombre(nombre);
     try {
-      jugadorDao.actualizarJugador_online(jugador_Buscar); // Llamamos al método de actualización
-    } catch (SQLException e) {
-      // Manejo de excepciones (agrega un mensaje o algún tratamiento si es necesario)
-      e.printStackTrace();
-    }
+      String idTexto = idFieldActualizar.getText();
+      String nombre = nombreFieldActualizar.getText();
 
-    // Limpiar los campos después de la actualización
-    idFieldActualizar.clear();
-    nombreFieldActualizar.clear();
+      if (idTexto.trim().equals("") || nombre.trim().equals("")) {
+        Alert alerta = new Alert(AlertType.INFORMATION);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Alerta:");
+        alerta.setContentText("No puedes actualizar con campos vacíos.");
+        alerta.showAndWait();
+        return;
+      }
+
+      Integer id = Integer.parseInt(idTexto);
+
+      Jugador jugador_Buscar = new Jugador();
+      jugador_Buscar.setId(id);
+      jugador_Buscar.setNombre(nombre);
+boolean exito = true;
+     exito = jugadorDao.actualizarJugador_online(jugador_Buscar);
+
+     if (!exito) {
+       Alert alerta = new Alert(AlertType.INFORMATION);
+       alerta.setTitle("Error");
+       alerta.setHeaderText("Alerta:");
+       alerta.setContentText("No se encontró un jugador con el ID: " + id);
+       alerta.showAndWait();
+     }
+
+    } catch (NumberFormatException e) {
+      Alert alerta = new Alert(AlertType.INFORMATION);
+      alerta.setTitle("Error de formato");
+      alerta.setHeaderText("ID inválido");
+      alerta.setContentText("Debes ingresar un número válido como ID.");
+      alerta.showAndWait();
+    } catch (SQLException e) {
+      Alert alerta = new Alert(AlertType.INFORMATION);
+      alerta.setTitle("Error de base de datos");
+      alerta.setHeaderText("No se pudo actualizar el jugador");
+      alerta.setContentText("Detalles: " + e.getMessage());
+      alerta.showAndWait();
+    } finally {
+      idFieldActualizar.clear();
+      nombreFieldActualizar.clear();
+    }
   }
 
   @FXML
   private Button ORN_online;
-
-  private CuartaController cuartaController;
-
-  public void setCuartaController(CuartaController cuartaController) {
-    this.cuartaController = cuartaController;
-  }
-  // ordenarNombreAlfabeticamente_online_evento
 
   @FXML
   private void ordenarNombreAlfabeticamente_online_evento() {

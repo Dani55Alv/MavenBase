@@ -1,4 +1,49 @@
-/* Definir un fondo lila para todo el VBox */
+/* Menu.css */
 .root {
-    -fx-background-color: #D8A7E6;  /* Color lila */
+  -fx-background-color: #8600c4; /* Lila más oscuro */
+}
+.button {
+  -fx-background-color: #6a2ea3; /* Color lila oscuro */
+  -fx-text-fill: rgb(238, 255, 0); /* Texto blanco */
+  -fx-font-size: 14px; /* Tamaño de fuente */
+  -fx-padding: 10px 20px; /* Espaciado interno */
+  -fx-border-radius: 5px; /* Bordes redondeados */
+  -fx-background-radius: 5px;
+  -fx-border-color: white; /* Borde blanco */
+  -fx-border-width: 2px; /* Grosor del borde */
+}
+
+.button:hover {
+  -fx-background-color: #8a4de3; /* Color más claro cuando pasa el ratón */
+}
+
+/* Personaliza las etiquetas (Label) */
+.label {
+  -fx-font-size: 16px; /* Tamaño de fuente */
+  -fx-text-fill: #ffffff; /* Color del texto blanco */
+  -fx-font-weight: bold; /* Negrita */
+}
+
+/* Personaliza la etiqueta de puntos */
+#labelPuntos {
+  -fx-font-size: 18px;
+  -fx-text-fill: #ffcc00; /* Amarillo para los puntos */
+}
+
+/* Personaliza el color de fondo de las celdas en GridPane */
+.grid-pane {
+  -fx-background-color: #8a4de3; /* Fondo lila */
+}
+
+/* Asegúrate de que el id está correctamente seleccionado */
+#primaryButton3 {
+  -fx-font-size: 10px; /* Tamaño de la fuente */
+  -fx-background-color: #6a2ea3; /* Fondo morado oscuro */
+  -fx-text-fill: #ffcc00; /* Amarillo para los puntos */
+}
+
+#primaryButton4 {
+  -fx-font-size: 10px; /* Tamaño de la fuente */
+  -fx-background-color: #6a2ea3; /* Fondo morado oscuro */
+  -fx-text-fill: #ffcc00; /* Amarillo para los puntos */
 }

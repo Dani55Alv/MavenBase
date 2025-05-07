@@ -54,12 +54,12 @@ public class App extends Application {
         quintaController = loaderQuinta.getController();
 
         // Enlazar controladores
-        quintaController.setCuartaController(cuartaController);
         tertiaryController.setSecondaryController(secondaryController);
 
         // Escena inicial
         scene = new Scene(loadFXML("primary"), 640, 480);
-        // scene.getStylesheets().add(getClass().getResource("/css/estilo.css").toExternalForm());
+        // CSS menú
+        scene.getStylesheets().add(getClass().getResource("/css/Menu.css").toExternalForm());
 
         stage.setTitle("Come_cocos");
         stage.setScene(scene);

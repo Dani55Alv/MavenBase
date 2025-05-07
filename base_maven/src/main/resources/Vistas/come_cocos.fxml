@@ -5,7 +5,8 @@
 <?import javafx.geometry.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.base.Controller.ComeCocosController">
+    fx:controller="com.base.Controller.ComeCocosController"    stylesheets="stylesheets= @/ css/ come_cocos.css">
+
 
     <!-- Centro de la pantalla con GridPane -->
     <center>
@@ -19,7 +20,7 @@
     </center>
 
     <top>
-        <HBox spacing="20" alignment="CENTER">
+        <HBox spacing="20" alignment="CENTER" fx:id= "arriba_come_cocos">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
@@ -35,7 +36,7 @@
             <padding>
                 <Insets top="15" right="15" bottom="15" left="15" />
             </padding>
-            <VBox spacing="5" alignment="CENTER">
+            <VBox fx:id="abajo_come_cocos" spacing="5" alignment="CENTER">
                 <Button text="↑" onAction="#moverArriba" />
                 <Button text="←" onAction="#moverIzquierda" />
                 <Button text="↓" onAction="#moverAbajo" />

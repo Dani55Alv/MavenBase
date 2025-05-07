@@ -25,7 +25,8 @@ public class Jugador implements Serializable {
         contadorId++;
 
     }
-//constructor vacio
+
+    // constructor vacio
     public Jugador() {
     }
 
@@ -63,12 +64,8 @@ public class Jugador implements Serializable {
         }
     }
 
-
-
-
-
     public void setId(Integer id) {
-        System.out.println("ID recibido en el setter: " + id);
+       // System.out.println("ID recibido en el setter: " + id);
         this.id = id;
     }
 

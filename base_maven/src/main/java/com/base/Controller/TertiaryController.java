@@ -7,6 +7,8 @@ import com.base.App;
 import com.base.DAO.JugadorDao;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -113,37 +115,102 @@ public class TertiaryController {
 
     @FXML
     private void agregarJugador() {
+
+        Alert alerta = new Alert(AlertType.INFORMATION);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Alerta:");
+        alerta.setContentText("No puedes crear jugadores con nombres vacios");
+
         String nombre = nombreFieldAgregar.getText(); // Obtener el nombre desde un TextField
-        jugadorDao.agregarJugador(nombre); // Usamos el Servidor directamente
+
+        if (nombre.equals("")) {
+            alerta.showAndWait();
+        } else {
+            jugadorDao.agregarJugador(nombre); // Usamos el Servidor directamente
+
+        }
         nombreFieldAgregar.clear();
+
     }
 
     @FXML
     private void eliminarJugador() {
         try {
             String input = idFieldEliminar.getText().trim();
-            if (input.isEmpty()) {
+            if (input.isEmpty() || input.trim().equals("")) {
                 System.out.println("Campo de ID vacío");
+
+                Alert alerta = new Alert(AlertType.INFORMATION);
+                alerta.setTitle("Error");
+                alerta.setHeaderText("Alerta");
+                alerta.setContentText("Campo de ID vacío");
+                alerta.showAndWait();
+
                 return;
             }
 
             Integer id = Integer.parseInt(input);
             System.out.println("ID ingresado desde TextField: " + id);
-
-            jugadorDao.eliminarJugador(id);
+boolean exito;
+            exito= jugadorDao.eliminarJugador(id);
+            
+            if (!exito) {
+                // Si el ID no es un número válido
+                Alert alerta = new Alert(AlertType.INFORMATION);
+                alerta.setTitle("Error");
+                alerta.setHeaderText("Alerta");
+                alerta.setContentText("No existe el jugadon con \"" + id + "\"");
+                alerta.showAndWait();
+            }
+            
             idFieldEliminar.clear();
+
+
+
         } catch (NumberFormatException e) {
             System.out.println("ID no válido: " + e.getMessage());
+
         }
     }
 
     @FXML
     private void actualizarJugador() {
-        Integer id = Integer.parseInt(idFieldActualizar.getText()); // Obtener el ID desde un TextField
-        String nombre = nombreFieldActualizar.getText(); // Obtener el nuevo nombre desde un TextField
-        jugadorDao.actualizarJugador(id, nombre); // Usamos el Servidor directamente
-        idFieldActualizar.clear();
-        nombreFieldActualizar.clear();
+
+        try {
+            Integer id = Integer.parseInt(idFieldActualizar.getText().trim());
+            String nombre = nombreFieldActualizar.getText().trim();
+
+            if (nombre.equals("")) {
+                Alert alerta = new Alert(AlertType.INFORMATION);
+                alerta.setTitle("Error");
+                alerta.setHeaderText("Alerta");
+                alerta.setContentText("El campo nombre está vacío.");
+                alerta.showAndWait();
+            } else {
+                boolean exito= true;
+
+               exito= jugadorDao.actualizarJugador(id, nombre);
+               if (!exito) {
+                   Alert alerta = new Alert(AlertType.INFORMATION);
+                   alerta.setTitle("Error");
+                   alerta.setHeaderText("Alerta:");
+                   alerta.setContentText("No se encontró un jugador con el ID: " + id);
+                   alerta.showAndWait();
+
+               }
+                
+            }
+
+            idFieldActualizar.clear();
+            nombreFieldActualizar.clear();
+
+        } catch (NumberFormatException e) {
+            Alert alerta = new Alert(AlertType.INFORMATION);
+            alerta.setTitle("Error");
+            alerta.setHeaderText("Alerta");
+            alerta.setContentText("Debes introducir un número entero válido en el campo ID.");
+            alerta.showAndWait();
+        }
     }
 
     @FXML
@@ -154,7 +221,6 @@ public class TertiaryController {
 
         jugadorDao.ordenarNombreAlfabeticamente();
     }
-
 
     @FXML
     private Button ORP;

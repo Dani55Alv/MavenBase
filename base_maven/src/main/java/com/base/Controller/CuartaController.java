@@ -166,13 +166,23 @@ public class CuartaController {
       // Obtener el controlador de la ventana de ComeCocos y pasar el jugador
       ComeCocosController controller = loader.getController();
       controller.setJugador(jugador); // Establecer el jugador en el controlador de ComeCocos
-
-      // Crear una nueva ventana (Stage)
+      // Crear una nueva ventana (Stage) y mostrarla
       Stage stage = new Stage();
       stage.setTitle("ComeCocos");
-      stage.setScene(new Scene(root));
 
+      // Crear la escena
+      Scene scene = new Scene(root);
+
+      // Añadir el CSS
+      scene.getStylesheets().add(getClass().getResource("/css/Come_cocos.css").toExternalForm());
+
+      // Establecer la escena y mostrar la ventana
+      stage.setScene(scene);
       // ✅ Al cerrar la ventana, actualizar puntos
+
+      // Deshabilitar la opción de redimensionar la ventana
+      stage.setResizable(false);
+
       stage.setOnHidden(event -> {
         actualizarPuntosDesdeJuego(controller);
       });

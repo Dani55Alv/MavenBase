@@ -95,12 +95,25 @@ public class SecondaryController {
       // Crear una nueva ventana (Stage) y mostrarla
       Stage stage = new Stage();
       stage.setTitle("ComeCocos");
-      stage.setScene(new Scene(root));
+
+      // Crear la escena
+      Scene scene = new Scene(root);
+
+      // Añadir el CSS
+      scene.getStylesheets().add(getClass().getResource("/css/Come_cocos.css").toExternalForm());
+
+      // Establecer la escena y mostrar la ventana
+      stage.setScene(scene);
+
+      // Deshabilitar la opción de redimensionar la ventana
+      stage.setResizable(false);
+
       // ⚠️ Aquí agregamos la lógica para actualizar los puntos al cerrar la ventana
       stage.setOnHidden(event -> {
         actualizarPuntosDesdeJuego(controller);
       });
       stage.show();
+
       // actualizarPuntosDesdeJuego(controller);
 
     } catch (IOException e) {

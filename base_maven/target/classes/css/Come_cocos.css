@@ -1,0 +1,38 @@
+.root {
+  -fx-background-color: #8600c4; /* Lila más oscuro */
+    -fx-text-fill: rgb(238, 255, 0); /* Texto blanco */
+
+}
+
+/* Cambiar el color de texto de todos los botones */
+.button {
+  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
+}
+
+
+/* Cambiar el color de texto de todos los Labels */
+.label {
+  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
+}
+
+/* Aplica el color de texto negro solo a los botones dentro del VBox con id 'abajo_come_cocos' */
+#abajo_come_cocos .button {
+    -fx-text-fill: black;  /* Cambiar el color del texto de los botones a negro */
+}
+
+#arriba_come_cocos .label {
+    -fx-text-fill: rgb(253, 253, 253);  /* Cambiar el color del texto de los botones a negro */
+
+}
+
+#labelNombreJugador .label {
+
+  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
+
+ }
+
+#labelPuntos .label{
+
+  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
+
+}

@@ -20,6 +20,9 @@ import java.util.List;
 
 import com.base.Model.Jugador;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 public class JugadorDao {
 
     public List<Jugador> listaJugadores;
@@ -86,10 +89,11 @@ public class JugadorDao {
             System.out.println("Dado de alta con exito al usuario " + jugador);
 
             listaJugadores.add(jugador);
+
         }
     }
 
-    public void eliminarJugador(Integer busquedaId) {
+    public boolean eliminarJugador(Integer busquedaId) {
         System.out.println("Jugadores en la lista antes de eliminar:");
         for (Jugador jugador : listaJugadores) {
             System.out.println(jugador); // Aquí sí imprime
@@ -107,21 +111,28 @@ public class JugadorDao {
                 iteradorJugador.remove();
                 eliminado = true;
                 System.out.println("Jugador eliminado: " + jugador);
-                break;
+           return eliminado;
+             
+
             }
         }
 
         if (!eliminado) {
-            System.out.println("Jugador con id: " + busquedaId + " no encontrado");
+            System.out.println("Jugador con id: " + busquedaId + " no eliminado");
+
+            return eliminado;
+
         }
 
         System.out.println("Jugadores en la lista después de eliminar:");
         for (Jugador jugador : listaJugadores) {
             System.out.println(jugador);
         }
+        return eliminado;
+
     }
 
-    public void actualizarJugador(Integer busquedaId, String nombre) {
+    public boolean actualizarJugador(Integer busquedaId, String nombre) {
         String usuario = "";
         String usuarioActualizado = "";
 
@@ -143,10 +154,15 @@ public class JugadorDao {
             System.out.println("a");
             System.out.println(usuarioActualizado);
             System.out.println("con exito");
+            return actualizacionExitosa;
+
         } else {
             System.out.println("Jugador con id: " + busquedaId + " no encontrado");
+            return actualizacionExitosa;
 
         }
+
+
 
     }
 
@@ -260,19 +276,21 @@ public class JugadorDao {
             stmt.executeUpdate();
 
             // Obtener el ID generado automáticamente de la misma ejecución
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int idGenerado = generatedKeys.getInt(1);
-                    jugador.setId(idGenerado); // ← asignamos el id real al objeto
+            try (Statement stmt2 = connection.createStatement();
+                    ResultSet rs = stmt2.executeQuery("SELECT last_insert_rowid();")) {
+                if (rs.next()) {
+                    int idGenerado = rs.getInt(1);
+                    jugador.setId(idGenerado);
                     System.out.println("Jugador insertado con ID real: " + idGenerado);
                 }
             }
         }
+
     }
 
     // Método para actualizar el nombre de un jugador
     // Método para actualizar el nombre de un jugador
-    public void actualizarJugador_online(Jugador jugador) throws SQLException {
+    public boolean actualizarJugador_online(Jugador jugador) throws SQLException {
         System.out.println("Actualizando jugador con ID: " + jugador.getId()); // Depuración
         String query = "UPDATE jugadores SET nombre = ? WHERE id = ?";
 
@@ -288,8 +306,10 @@ public class JugadorDao {
             System.out.println("Filas afectadas: " + rowsAffected);
             if (rowsAffected > 0) {
                 System.out.println("Jugador actualizado correctamente.");
+                return true;
             } else {
                 System.out.println("No se encontró un jugador con el ID: " + jugador.getId());
+return false;
             }
         }
     }
@@ -317,7 +337,7 @@ public class JugadorDao {
     }
 
     // Método para eliminar un jugador por su ID
-    public void eliminarJugador_online(int id) throws SQLException {
+    public boolean eliminarJugador_online(int id) throws SQLException {
         String query = "DELETE FROM jugadores WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -326,8 +346,10 @@ public class JugadorDao {
 
             if (rowsAffected > 0) {
                 System.out.println("Jugador con ID " + id + " eliminado correctamente.");
+                return true;
             } else {
                 System.out.println("No se encontró un jugador con el ID " + id);
+return false;
             }
         }
     }
@@ -348,6 +370,8 @@ public class JugadorDao {
                 System.out.println("ID: " + id + ", Nombre: " + nombre);
             }
         }
+
+    
     }
 
     // Método para obtener los jugadores ordenados por puntos
@@ -364,8 +388,10 @@ public class JugadorDao {
                 // String otroCampo = rs.getString("campo");
 
                 System.out.println("ID: " + id + ", Nombre: " + nombre);
+
             }
         }
+
     }
 
     public List<Jugador> getJugadores() throws SQLException {
