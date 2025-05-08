@@ -80,16 +80,23 @@ public class JugadorDao {
         }
     }
 
-    public void agregarJugador(String nombre) {
+    public boolean agregarJugador(String nombre) {
 
         if (nombre.equals("")) {
             System.out.println("Vacio, por lo tanto no permitido");
+            return false;
         } else {
+
+            if (listaJugadores.size()>=4) {
+                System.out.println("No se puede agregar mas de 4 jugadores");
+                return false;
+            }else{
             Jugador jugador = new Jugador(nombre);
             System.out.println("Dado de alta con exito al usuario " + jugador);
 
             listaJugadores.add(jugador);
-
+            return true;
+               }
         }
     }
 
@@ -111,8 +118,7 @@ public class JugadorDao {
                 iteradorJugador.remove();
                 eliminado = true;
                 System.out.println("Jugador eliminado: " + jugador);
-           return eliminado;
-             
+                return eliminado;
 
             }
         }
@@ -161,8 +167,6 @@ public class JugadorDao {
             return actualizacionExitosa;
 
         }
-
-
 
     }
 
@@ -266,26 +270,44 @@ public class JugadorDao {
 
     }
 
-    public void insertarJugador_online(Jugador jugador) throws SQLException {
-        String query = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";
+    public boolean insertarJugador_online(Jugador jugador) throws SQLException {
+        // Verificamos cuántos jugadores hay ya en la base de datos
+        String countQuery = "SELECT COUNT(*) FROM jugadores";
+        try (Statement countStmt = connection.createStatement();
+                ResultSet countRs = countStmt.executeQuery(countQuery)) {
 
-        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, jugador.getNombre());
-            stmt.setDouble(2, jugador.getPuntos());
-
-            stmt.executeUpdate();
-
-            // Obtener el ID generado automáticamente de la misma ejecución
-            try (Statement stmt2 = connection.createStatement();
-                    ResultSet rs = stmt2.executeQuery("SELECT last_insert_rowid();")) {
-                if (rs.next()) {
-                    int idGenerado = rs.getInt(1);
-                    jugador.setId(idGenerado);
-                    System.out.println("Jugador insertado con ID real: " + idGenerado);
+            if (countRs.next()) {
+                int cantidadJugadores = countRs.getInt(1);
+                if (cantidadJugadores >= 12) {
+                    System.out.println("No se puede insertar: ya hay 12 jugadores o más.");
+                    return false;
                 }
             }
         }
 
+        // Insertamos el jugador si hay espacio
+        String insertQuery = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            stmt.setString(1, jugador.getNombre());
+            stmt.setDouble(2, jugador.getPuntos());
+
+            int filasAfectadas = stmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                // Usamos SELECT last_insert_rowid(); para obtener el ID en SQLite
+                try (Statement stmt2 = connection.createStatement();
+                        ResultSet rs = stmt2.executeQuery("SELECT last_insert_rowid();")) {
+                    if (rs.next()) {
+                        int idGenerado = rs.getInt(1);
+                        jugador.setId(idGenerado);
+                        System.out.println("Jugador insertado con ID real: " + idGenerado);
+                    }
+                }
+                return true;
+            }
+        }
+
+        return false; // En caso de que no se insertara por alguna razón
     }
 
     // Método para actualizar el nombre de un jugador
@@ -309,7 +331,7 @@ public class JugadorDao {
                 return true;
             } else {
                 System.out.println("No se encontró un jugador con el ID: " + jugador.getId());
-return false;
+                return false;
             }
         }
     }
@@ -349,7 +371,7 @@ return false;
                 return true;
             } else {
                 System.out.println("No se encontró un jugador con el ID " + id);
-return false;
+                return false;
             }
         }
     }
@@ -371,7 +393,6 @@ return false;
             }
         }
 
-    
     }
 
     // Método para obtener los jugadores ordenados por puntos

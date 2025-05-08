@@ -118,7 +118,7 @@ public class TertiaryController {
 
         Alert alerta = new Alert(AlertType.INFORMATION);
         alerta.setTitle("Error");
-        alerta.setHeaderText("Alerta:");
+        alerta.setHeaderText("Alerta");
         alerta.setContentText("No puedes crear jugadores con nombres vacios");
 
         String nombre = nombreFieldAgregar.getText(); // Obtener el nombre desde un TextField
@@ -126,8 +126,18 @@ public class TertiaryController {
         if (nombre.equals("")) {
             alerta.showAndWait();
         } else {
-            jugadorDao.agregarJugador(nombre); // Usamos el Servidor directamente
+            boolean exito;
 
+            exito = jugadorDao.agregarJugador(nombre); // Usamos el Servidor directamente
+
+            if (!exito) {
+                Alert alerta2 = new Alert(AlertType.INFORMATION);
+                alerta2.setTitle("Error");
+                alerta2.setHeaderText("Alerta");
+                alerta2.setContentText("No puedes crear mas de 4 jugadores");
+                alerta2.showAndWait();
+
+            }
         }
         nombreFieldAgregar.clear();
 
@@ -151,9 +161,9 @@ public class TertiaryController {
 
             Integer id = Integer.parseInt(input);
             System.out.println("ID ingresado desde TextField: " + id);
-boolean exito;
-            exito= jugadorDao.eliminarJugador(id);
-            
+            boolean exito;
+            exito = jugadorDao.eliminarJugador(id);
+
             if (!exito) {
                 // Si el ID no es un número válido
                 Alert alerta = new Alert(AlertType.INFORMATION);
@@ -162,10 +172,8 @@ boolean exito;
                 alerta.setContentText("No existe el jugadon con \"" + id + "\"");
                 alerta.showAndWait();
             }
-            
+
             idFieldEliminar.clear();
-
-
 
         } catch (NumberFormatException e) {
             System.out.println("ID no válido: " + e.getMessage());
@@ -187,18 +195,18 @@ boolean exito;
                 alerta.setContentText("El campo nombre está vacío.");
                 alerta.showAndWait();
             } else {
-                boolean exito= true;
+                boolean exito = true;
 
-               exito= jugadorDao.actualizarJugador(id, nombre);
-               if (!exito) {
-                   Alert alerta = new Alert(AlertType.INFORMATION);
-                   alerta.setTitle("Error");
-                   alerta.setHeaderText("Alerta:");
-                   alerta.setContentText("No se encontró un jugador con el ID: " + id);
-                   alerta.showAndWait();
+                exito = jugadorDao.actualizarJugador(id, nombre);
+                if (!exito) {
+                    Alert alerta = new Alert(AlertType.INFORMATION);
+                    alerta.setTitle("Error");
+                    alerta.setHeaderText("Alerta:");
+                    alerta.setContentText("No se encontró un jugador con el ID: " + id);
+                    alerta.showAndWait();
 
-               }
-                
+                }
+
             }
 
             idFieldActualizar.clear();

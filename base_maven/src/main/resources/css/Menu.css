@@ -47,3 +47,7 @@
   -fx-background-color: #6a2ea3; /* Fondo morado oscuro */
   -fx-text-fill: #ffcc00; /* Amarillo para los puntos */
 }
+
+.table-view .column-header .label {
+    -fx-text-fill: #7a7a7a; /* Color de texto más oscuro */
+}

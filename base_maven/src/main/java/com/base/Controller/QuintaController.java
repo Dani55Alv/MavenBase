@@ -88,12 +88,16 @@ public class QuintaController {
       Jugador jugador = new Jugador(nombreTexto);
 
       try {
-        jugadorDao.insertarJugador_online(jugador); // Inserción
-        Alert alerta2 = new Alert(AlertType.INFORMATION);
-        alerta2.setTitle("Exito");
-        alerta2.setHeaderText("Alerta");
-        alerta2.setContentText("Jugador agregado con éxito.");
-        alerta2.showAndWait();
+       boolean exito;
+       exito= jugadorDao.insertarJugador_online(jugador); // Inserción
+     
+       if (!exito) {
+         Alert alerta2 = new Alert(AlertType.INFORMATION);
+         alerta2.setTitle("Error");
+         alerta2.setHeaderText("Alerta");
+         alerta2.setContentText("No se pueden agregar mas de 12 jugadores.");
+         alerta2.showAndWait();
+       }
 
         // Aquí podrías llamar a actualizarTablaJugadores_bd si lo tienes
       } catch (SQLException e) {
@@ -171,16 +175,16 @@ public class QuintaController {
       Jugador jugador_Buscar = new Jugador();
       jugador_Buscar.setId(id);
       jugador_Buscar.setNombre(nombre);
-boolean exito = true;
-     exito = jugadorDao.actualizarJugador_online(jugador_Buscar);
+      boolean exito = true;
+      exito = jugadorDao.actualizarJugador_online(jugador_Buscar);
 
-     if (!exito) {
-       Alert alerta = new Alert(AlertType.INFORMATION);
-       alerta.setTitle("Error");
-       alerta.setHeaderText("Alerta:");
-       alerta.setContentText("No se encontró un jugador con el ID: " + id);
-       alerta.showAndWait();
-     }
+      if (!exito) {
+        Alert alerta = new Alert(AlertType.INFORMATION);
+        alerta.setTitle("Error");
+        alerta.setHeaderText("Alerta:");
+        alerta.setContentText("No se encontró un jugador con el ID: " + id);
+        alerta.showAndWait();
+      }
 
     } catch (NumberFormatException e) {
       Alert alerta = new Alert(AlertType.INFORMATION);

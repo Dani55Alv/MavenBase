@@ -24,15 +24,3 @@
     -fx-text-fill: rgb(253, 253, 253);  /* Cambiar el color del texto de los botones a negro */
 
 }
-
-#labelNombreJugador .label {
-
-  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
-
- }
-
-#labelPuntos .label{
-
-  -fx-text-fill: rgb(238, 255, 0); /* Color de texto */
-
-}
