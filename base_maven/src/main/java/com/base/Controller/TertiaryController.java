@@ -43,8 +43,14 @@ public class TertiaryController {
 
         String ruta = "C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/resources/Ficheros_binarios/";
         String fichero = "informacion.bin";
-        jugadorDao.grabar_datos(ruta, fichero);
-        ;
+        try {
+            jugadorDao.grabar_datos(ruta, fichero);
+
+        } catch (Exception e) {
+System.out.println("Error al guardar o seleccionar fichero");
+e.printStackTrace();
+        }
+        
     }
 
     @FXML

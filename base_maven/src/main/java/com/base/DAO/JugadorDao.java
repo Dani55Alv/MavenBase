@@ -31,7 +31,7 @@ public class JugadorDao {
         this.listaJugadores = new ArrayList<>();
     }
 
-    public void grabar_datos(String ruta, String fichero) {
+    public void grabar_datos(String ruta, String fichero) throws Exception {
         Path rutaDef = Paths.get(ruta, fichero);
 
         try {
@@ -48,7 +48,7 @@ public class JugadorDao {
 
     }
 
-    public void setListaJugadores(List<Jugador> listaJugadores) {
+    public void setListaJugadores(List<Jugador> listaJugadores) throws Exception {
         this.listaJugadores = listaJugadores;
     }
 
@@ -56,10 +56,6 @@ public class JugadorDao {
         Path rutaDef = Paths.get(ruta, fichero);
         List<Jugador> listaRecuperar = new ArrayList<>();
         try {
-
-            // Escribir y leer desde estructura (arraylist,linked,map...) no directamente
-            // sin estructua.
-            // No tiene porque se siempre en memoria pero en ese caso si.
 
             InputStream archivoEntrada = Files.newInputStream(rutaDef);
 
@@ -87,16 +83,16 @@ public class JugadorDao {
             return false;
         } else {
 
-            if (listaJugadores.size()>=4) {
+            if (listaJugadores.size() >= 4) {
                 System.out.println("No se puede agregar mas de 4 jugadores");
                 return false;
-            }else{
-            Jugador jugador = new Jugador(nombre);
-            System.out.println("Dado de alta con exito al usuario " + jugador);
+            } else {
+                Jugador jugador = new Jugador(nombre);
+                System.out.println("Dado de alta con exito al usuario " + jugador);
 
-            listaJugadores.add(jugador);
-            return true;
-               }
+                listaJugadores.add(jugador);
+                return true;
+            }
         }
     }
 
@@ -284,6 +280,9 @@ public class JugadorDao {
                 }
             }
         }
+ //prepareStatatement --> select
+
+ // create statement --> crear
 
         // Insertamos el jugador si hay espacio
         String insertQuery = "INSERT INTO jugadores (nombre, puntos) VALUES (?, ?)";

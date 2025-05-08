@@ -13,6 +13,7 @@ import com.base.App;
 import com.base.DAO.JugadorDao;
 import com.base.Model.Jugador;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -84,7 +85,8 @@ public class CuartaController {
 
   private JugadorDao jugadorDao;
 
-  public static int opcionOrdenacion = 0;
+  // public static int opcionOrdenacion = 0;
+  static SimpleIntegerProperty opcionOrdenacion = new SimpleIntegerProperty(0);
 
   @FXML
   private void initialize() {
@@ -105,18 +107,25 @@ public class CuartaController {
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
       colNombreOnline.setSortable(true);
 
-      switch (opcionOrdenacion) {
-        case 0:
-          jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+      switch (opcionOrdenacion.get()) {
 
+        case 0:
+          System.out.println(opcionOrdenacion.get() + " adaddadadda");
+          // Binding recibido
+          jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
+          // NumberBinding
           break;
 
         case 1:
+          System.out.println(opcionOrdenacion.get() + " adaddadadda");
+
           jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresNombresOrdenados_online());
 
           break;
 
         case 2:
+          System.out.println(opcionOrdenacion.get() + " adaddadadda");
+
           jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresPuntosOrdenados_online());
 
           break;
@@ -229,7 +238,14 @@ public class CuartaController {
     Connection conn = DatabaseConnector.conectar(); // Importante la funcion de conectarse a la base de datos
     // con el constructor de la base de datos de JugadorDao.java
     JugadorDao jugadorDao = new JugadorDao(conn);
-    jugadorDao.setListaJugadores(jugadoresList);
+
+    try {
+      jugadorDao.setListaJugadores(jugadoresList);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     Jugador jugador = new Jugador();
 
     for (Jugador jugadores : jugadoresList) {

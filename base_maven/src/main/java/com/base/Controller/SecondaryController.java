@@ -13,11 +13,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class SecondaryController {
@@ -70,7 +68,12 @@ public class SecondaryController {
     Integer id = (Integer) datos.get(0);
     Double nuevosPuntos = (Double) datos.get(1);
     JugadorDao jugadorDao = new JugadorDao("Dao");
-    jugadorDao.setListaJugadores(jugadoresList);
+    try {
+      jugadorDao.setListaJugadores(jugadoresList);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     jugadorDao.actualizarJugadorPuntos(id, nuevosPuntos);
     System.out.println("Se actualizaron los puntos");
     // Si estás usando TableView y quieres forzar actualización:

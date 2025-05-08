@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.base.Model.Jugador;
@@ -88,16 +89,16 @@ public class QuintaController {
       Jugador jugador = new Jugador(nombreTexto);
 
       try {
-       boolean exito;
-       exito= jugadorDao.insertarJugador_online(jugador); // Inserción
-     
-       if (!exito) {
-         Alert alerta2 = new Alert(AlertType.INFORMATION);
-         alerta2.setTitle("Error");
-         alerta2.setHeaderText("Alerta");
-         alerta2.setContentText("No se pueden agregar mas de 12 jugadores.");
-         alerta2.showAndWait();
-       }
+        boolean exito;
+        exito = jugadorDao.insertarJugador_online(jugador); // Inserción
+
+        if (!exito) {
+          Alert alerta2 = new Alert(AlertType.INFORMATION);
+          alerta2.setTitle("Error");
+          alerta2.setHeaderText("Alerta");
+          alerta2.setContentText("No se pueden agregar mas de 12 jugadores.");
+          alerta2.showAndWait();
+        }
 
         // Aquí podrías llamar a actualizarTablaJugadores_bd si lo tienes
       } catch (SQLException e) {
@@ -203,13 +204,16 @@ public class QuintaController {
       nombreFieldActualizar.clear();
     }
   }
+  // NumberBinding
 
   @FXML
   private Button ORN_online;
+  // Emitir binding
 
   @FXML
   private void ordenarNombreAlfabeticamente_online_evento() {
-    CuartaController.opcionOrdenacion = 1;
+    CuartaController.opcionOrdenacion.set(1);
+
     System.out.println("Se ha marcado cargarOrdenado = 1. Al entrar a la vista se ordenará por nombre.");
   }
 
@@ -218,7 +222,7 @@ public class QuintaController {
 
   @FXML
   private void ordenarNombrePuntos_online_evento() {
-    CuartaController.opcionOrdenacion = 2;
+    CuartaController.opcionOrdenacion.set(2);
     System.out.println("Se ha marcado cargarOrdenado = 2. Al entrar a la vista se ordenará por puntos.");
   }
 }
