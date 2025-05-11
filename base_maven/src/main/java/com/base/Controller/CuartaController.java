@@ -1,3 +1,11 @@
+/**
+ * Es el controlador de la tabla online
+ * 
+ * @author Daniel Alvarez Morales
+ * @version 1.0
+ * @since 2025
+ * 
+ */
 package com.base.Controller;
 
 import java.io.IOException;
@@ -39,6 +47,21 @@ public class CuartaController {
   @FXML
   private TableColumn<Jugador, Double> colPuntosOnline;
 
+  /**
+   * Ordena la tabla de jugadores por el nombre de manera ascendente.
+   * 
+   * Este método realiza lo siguiente:
+   * 1. Configura la columna 'nombre' para ser ordenable.
+   * 2. Ordena la lista de jugadores en la tabla por el nombre utilizando un
+   * comparador.
+   * 3. Recarga los elementos de la tabla con la lista ordenada.
+   * 4. Marca visualmente la columna 'nombre' como la columna ordenada.
+   * 5. Forza una actualización visual de la tabla para reflejar el nuevo orden.
+   * 
+   * El método es útil para asegurar que la tabla siempre se muestre ordenada por
+   * nombre en orden ascendente
+   * y se actualice visualmente en la interfaz de usuario.
+   */
   @FXML
   public void ordenarTablaPorNombre() {
     // Asegúrate de que la columna esté configurada para ser ordenable
@@ -60,6 +83,25 @@ public class CuartaController {
     System.out.println("Online ordenado");
   }
 
+  /**
+   * Actualiza la tabla de jugadores en la interfaz de usuario con los datos
+   * obtenidos de la base de datos.
+   * 
+   * Este método realiza lo siguiente:
+   * 1. Obtiene la lista de jugadores actualizada desde la base de datos
+   * utilizando el método
+   * `obtenerJugadores_online` de `jugadorDao`.
+   * 2. Convierte la lista de jugadores en un objeto `ObservableList`, lo que
+   * permite la actualización dinámica
+   * de la tabla.
+   * 3. Establece los jugadores obtenidos como los nuevos elementos en la tabla
+   * `tablaJugadoresONLINE`.
+   * 4. Si ocurre un error durante el proceso de consulta a la base de datos, se
+   * captura y se imprime la excepción.
+   * 
+   * Este método se usa para reflejar los cambios en la base de datos y mostrar
+   * los datos actualizados en la UI.
+   */
   public void actualizarTablaJugadores_bd() {
     try {
       // Obtén los jugadores actualizados
@@ -88,6 +130,24 @@ public class CuartaController {
   // public static int opcionOrdenacion = 0;
   static SimpleIntegerProperty opcionOrdenacion = new SimpleIntegerProperty(0);
 
+  /**
+   * Método que se ejecuta al inicializar la vista.
+   * 
+   * Establece la conexión con la base de datos, asegura que la tabla 'jugadores'
+   * existe
+   * o la crea si no es así, configura las columnas de la tabla en la interfaz, y
+   * carga los
+   * jugadores desde la base de datos con la ordenación seleccionada.
+   * 
+   * Este método también configura un listener en la tabla para que, al
+   * seleccionar un jugador,
+   * se inicie el juego con ese jugador.
+   * 
+   * Las posibles opciones de ordenación son:
+   * 0 - Sin ordenación específica.
+   * 1 - Ordenación por nombre.
+   * 2 - Ordenación por puntos.
+   */
   @FXML
   private void initialize() {
     try {
@@ -107,33 +167,28 @@ public class CuartaController {
       colPuntosOnline.setCellValueFactory(new PropertyValueFactory<>("puntos"));
       colNombreOnline.setSortable(true);
 
+      // Manejo de la opción de ordenación
       switch (opcionOrdenacion.get()) {
-
         case 0:
-          System.out.println(opcionOrdenacion.get() + " adaddadadda");
-          // Binding recibido
+          System.out.println(opcionOrdenacion.get() + "  ");
           jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadores_online());
-          // NumberBinding
           break;
 
         case 1:
-          System.out.println(opcionOrdenacion.get() + " adaddadadda");
-
+          System.out.println(opcionOrdenacion.get() + "  ");
           jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresNombresOrdenados_online());
-
           break;
 
         case 2:
-          System.out.println(opcionOrdenacion.get() + " adaddadadda");
-
+          System.out.println(opcionOrdenacion.get() + "  ");
           jugadoresList = FXCollections.observableArrayList(jugadorDao.obtenerJugadoresPuntosOrdenados_online());
-
           break;
 
         default:
           break;
       }
 
+      // Asignar los jugadores a la tabla
       tablaJugadoresONLINE.setItems(jugadoresList);
       System.out.println("Tabla cargada");
 
@@ -152,120 +207,212 @@ public class CuartaController {
     }
   }
 
+  /**
+   * Este método se encarga de cambiar a la vista "Cuarta".
+   * Carga el archivo FXML correspondiente, crea una nueva ventana (Stage),
+   * establece la escena con el contenido de la vista y la muestra al usuario.
+   */
   @FXML
   private void irACuartaVista() {
     try {
+      // Cargar el archivo FXML de la vista "Cuarta"
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/cuarta.fxml"));
+
+      // Cargar la raíz del archivo FXML
       Parent root = loader.load();
+
+      // Crear una nueva instancia de Stage (ventana)
       Stage stage = new Stage();
+
+      // Establecer el título de la ventana
       stage.setTitle("Vista Cuarta");
+
+      // Crear una nueva escena con el contenido de la vista FXML y asignarla al Stage
       stage.setScene(new Scene(root));
+
+      // Mostrar la ventana
       stage.show();
     } catch (IOException e) {
+      // Manejar excepciones si ocurre un error al cargar el archivo FXML
       e.printStackTrace();
     }
   }
 
+  /**
+   * Este método se encarga de iniciar la ventana de la vista "ComeCocos" y
+   * pasarle el jugador seleccionado.
+   * Carga el archivo FXML correspondiente, obtiene el controlador de la vista y
+   * establece el jugador en él.
+   * Luego, crea una nueva ventana (Stage) para mostrar la interfaz y aplica un
+   * estilo CSS.
+   * También se asegura de actualizar los puntos del jugador cuando se cierra la
+   * ventana.
+   *
+   * @param jugador El jugador que se va a pasar a la vista ComeCocos.
+   */
   @FXML
   private void iniciarComeCocos(Jugador jugador) {
     try {
+      // Cargar el archivo FXML de la vista "ComeCocos"
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/come_cocos.fxml"));
       Parent root = loader.load();
 
-      // Obtener el controlador de la ventana de ComeCocos y pasar el jugador
+      // Obtener el controlador de la ventana de ComeCocos
       ComeCocosController controller = loader.getController();
-      controller.setJugador(jugador); // Establecer el jugador en el controlador de ComeCocos
-      // Crear una nueva ventana (Stage) y mostrarla
+      // Establecer el jugador en el controlador de ComeCocos
+      controller.setJugador(jugador);
+
+      // Crear una nueva ventana (Stage)
       Stage stage = new Stage();
+      // Establecer el título de la ventana
       stage.setTitle("ComeCocos");
 
-      // Crear la escena
+      // Crear la escena y establecer el archivo FXML como contenido
       Scene scene = new Scene(root);
 
-      // Añadir el CSS
+      // Añadir el CSS para personalizar la apariencia
       scene.getStylesheets().add(getClass().getResource("/css/Come_cocos.css").toExternalForm());
 
       // Establecer la escena y mostrar la ventana
       stage.setScene(scene);
-      // ✅ Al cerrar la ventana, actualizar puntos
 
       // Deshabilitar la opción de redimensionar la ventana
       stage.setResizable(false);
 
+      // Actualizar los puntos del jugador al cerrar la ventana
       stage.setOnHidden(event -> {
         actualizarPuntosDesdeJuego(controller);
       });
 
+      // Mostrar la ventana
       stage.show();
-      // actualizarPuntosDesdeJuego(controller);
-
     } catch (IOException e) {
+      // Manejar excepciones si ocurre un error al cargar el archivo FXML
       e.printStackTrace();
     }
   }
 
-  // Método que se llamará para cargar los jugadores en la tabla
-  public void cargarJugadores(ObservableList<Jugador> jugadores) {
-    jugadoresList.setAll(jugadores); // Actualiza la lista de jugadores en la tabla
-  }
-
+ 
+  /**
+   * Este método ordena la tabla de jugadores por nombre de manera ascendente.
+   * Utiliza el DAO para obtener la lista de jugadores ordenados por nombre y
+   * luego actualiza
+   * la tabla con la lista ordenada. Finalmente, marca la columna de nombre como
+   * la ordenada y
+   * refresca la vista de la tabla.
+   *
+   * @throws SQLException Si ocurre un error al realizar la consulta de jugadores
+   *                      a la base de datos.
+   */
   @FXML
   public void ordenarTablaPorNombre2() throws SQLException {
+    // Obtener la lista de jugadores ordenados por nombre desde el DAO
     List<Jugador> ordenada = jugadorDao.obtenerJugadoresNombresOrdenados_online();
+
+    // Convertir la lista de jugadores a una lista observable para que la tabla se
+    // actualice automáticamente
     ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
+
+    // Establecer la lista ordenada como la fuente de datos de la tabla
     tablaJugadoresONLINE.setItems(obs);
+
+    // Establecer la columna de nombre como la que se va a ordenar visualmente
     tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
+
+    // Realizar el ordenamiento de la tabla
     tablaJugadoresONLINE.sort();
+
+    // Refrescar la tabla para asegurarse de que se muestren los cambios
     tablaJugadoresONLINE.refresh();
-    System.out.println("Tabla ordenada y refrescada correctamente.");
 
+    // Mensaje de confirmación en la consola
+    System.out.println("Tabla ordenada y refrescada correctamente.");
   }
 
+  /**
+   * Carga la lista de jugadores ordenados por nombre desde la base de datos y
+   * actualiza
+   * la tabla con estos datos. Establece la columna de nombre como la que se va a
+   * ordenar
+   * visualmente y realiza el ordenamiento en la tabla.
+   *
+   * Este método no invoca el método `initialize` ni ningún otro método genérico.
+   *
+   * @throws SQLException Si ocurre un error al consultar los jugadores ordenados
+   *                      por nombre en la base de datos.
+   */
   public void cargarJugadoresOrdenados() throws SQLException {
-    // NO invocar initialize ni el método genérico
+    // Obtener la lista de jugadores ordenados por nombre desde el DAO
     List<Jugador> ordenada = jugadorDao.obtenerJugadoresNombresOrdenados_online();
+
+    // Convertir la lista de jugadores en un ObservableList para que se actualice la
+    // tabla
     ObservableList<Jugador> obs = FXCollections.observableArrayList(ordenada);
+
+    // Establecer la lista ordenada como los elementos visibles de la tabla
     tablaJugadoresONLINE.setItems(obs);
+
+    // Establecer la columna de nombre como la que se va a ordenar visualmente
     tablaJugadoresONLINE.getSortOrder().setAll(colNombreOnline);
+
+    // Realizar el ordenamiento de la tabla
     tablaJugadoresONLINE.sort();
   }
 
+  /**
+   * Actualiza los puntos de un jugador en la base de datos después de un juego de
+   * ComeCocos.
+   * Obtiene los datos del controlador del juego, como el ID del jugador y los
+   * nuevos puntos,
+   * busca al jugador correspondiente en la lista de jugadores y actualiza sus
+   * puntos en la base de datos.
+   * 
+   * @param controladorJuego El controlador de la vista de ComeCocos que contiene
+   *                         los datos del juego, incluidos el ID del jugador y
+   *                         los nuevos puntos.
+   */
   public void actualizarPuntosDesdeJuego(ComeCocosController controladorJuego) {
+    // Obtener los datos del controlador de ComeCocos
     List<Object> datos = controladorJuego.getPuntosEid();
 
+    // Extraer el ID del jugador y los nuevos puntos desde los datos obtenidos
     Integer id = (Integer) datos.get(0);
     Double nuevosPuntos = (Double) datos.get(1);
-    Connection conn = DatabaseConnector.conectar(); // Importante la funcion de conectarse a la base de datos
-    // con el constructor de la base de datos de JugadorDao.java
+
+    // Conectar a la base de datos
+    Connection conn = DatabaseConnector.conectar();
     JugadorDao jugadorDao = new JugadorDao(conn);
 
     try {
+      // Establecer la lista de jugadores en el DAO
       jugadorDao.setListaJugadores(jugadoresList);
-
     } catch (Exception e) {
       e.printStackTrace();
     }
 
+    // Buscar el jugador correspondiente en la lista
     Jugador jugador = new Jugador();
-
     for (Jugador jugadores : jugadoresList) {
       if (jugadores.getId().equals(id)) {
         jugador = jugadores;
       }
     }
 
+    // Establecer los nuevos puntos para el jugador
     jugador.setPuntos(nuevosPuntos);
+
     try {
+      // Actualizar los puntos del jugador en la base de datos
       jugadorDao.actualizarJugadorPuntos_online(jugador);
-
     } catch (Exception e) {
-
       e.printStackTrace();
       System.out.println("Error consulta actualizar puntos");
     }
-    System.out.println("Se actualizaron los puntos");
-    // Si estás usando TableView y quieres forzar actualización:
-    tablaJugadoresONLINE.refresh(); // si la tabla se llama así
 
+    System.out.println("Se actualizaron los puntos");
+
+    // Forzar la actualización de la tabla si estás usando TableView
+    tablaJugadoresONLINE.refresh();
   }
+
 }

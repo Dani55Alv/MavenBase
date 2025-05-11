@@ -1,3 +1,13 @@
+
+/**
+ * Es el modelo jugador donde se guardan su comportamiento y atributos.
+ * 
+ * @author Daniel Alvarez Morales
+ * @version 1.0
+ * @since 2025
+ * 
+ */
+
 package com.base.Model;
 
 import java.io.Serializable;
@@ -18,15 +28,25 @@ public class Jugador implements Serializable {
     private double puntos;
 
     // Inicializamos un nuevo jugador sin puntos.
+    /**
+     * Constructor de la clase Jugador. Crea un nuevo jugador con un nombre,
+     * asigna un ID único y establece los puntos iniciales a cero.
+     * 
+     * El ID del jugador se genera automáticamente mediante un contador estático
+     * que incrementa con cada nuevo jugador creado. El contador asegura que
+     * cada jugador tenga un ID único dentro de la aplicación.
+     * 
+     * @param nombre El nombre del jugador. Este parámetro se usa para asignar
+     *               el nombre al nuevo jugador.
+     */
     public Jugador(String nombre) {
         this.id = contadorId;
         this.nombre = nombre;
         this.puntos = 0;
-        contadorId++;
-
+        contadorId++; // Incrementa el contador para el siguiente jugador
     }
 
-    // constructor vacio
+    // constructor vacio para poder trabajar con sets
     public Jugador() {
     }
 
@@ -64,31 +84,67 @@ public class Jugador implements Serializable {
         }
     }
 
+    /**
+     * Establece el ID del jugador.
+     * 
+     * @param id El ID a asignar al jugador.
+     */
     public void setId(Integer id) {
-        // System.out.println("ID recibido en el setter: " + id);
         this.id = id;
     }
 
+    /**
+     * Obtiene el ID del jugador.
+     * 
+     * @return El ID del jugador.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Obtiene el nombre del jugador.
+     * 
+     * @return El nombre del jugador.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del jugador.
+     * 
+     * @param nombre El nombre a asignar al jugador.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene los puntos del jugador.
+     * 
+     * @return Los puntos del jugador.
+     */
     public double getPuntos() {
         return puntos;
     }
 
+    /**
+     * Establece los puntos del jugador.
+     * 
+     * @param puntos Los puntos a asignar al jugador.
+     */
     public void setPuntos(double puntos) {
         this.puntos = puntos;
     }
 
+    /**
+     * Compara si dos objetos son iguales, comparando su ID.
+     * 
+     * @param id_objeto El objeto con el que comparar.
+     * @return true si los objetos son iguales (tienen el mismo ID), false en caso
+     *         contrario.
+     */
     @Override
     public boolean equals(Object id_objeto) {
         if (this == id_objeto)
@@ -99,23 +155,28 @@ public class Jugador implements Serializable {
         return id == jugador.id;
     }
 
+    /**
+     * Genera un valor hash basado en el ID del jugador, utilizado en colecciones
+     * como HashSet y HashMap.
+     * 
+     * @return Un valor hash para el jugador.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Jugador{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", puntos=" + puntos +
-                '}';
-    }
-
+/**
+ * Devuelve una representación en cadena del jugador.
+ * 
+ * @return Una cadena con los detalles del jugador (ID, nombre, puntos).
+ */
+@Override
+public String toString() {
+    return "Jugador{" +
+            "id=" + id +
+            ", nombre='" + nombre + '\'' +
+            ", puntos=" + puntos +
+            '}';
 }
-
-// Druve manager
-// inicializar base de datos y luego en seguido cargalo (todo en el constructor)
-// desde los controller se llama los dao los dao modifica los datos y tal
-// (ordena).
+}

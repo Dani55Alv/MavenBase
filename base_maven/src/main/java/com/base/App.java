@@ -1,3 +1,13 @@
+
+/**
+ * Es la clase principal donde se desarrolla la aplicacion javaFX.
+ * 
+ * @author Daniel Alvarez Morales
+ * @version 1.0
+ * @since 2025
+ * 
+ */
+
 package com.base;
 
 import javafx.application.Application;
@@ -66,6 +76,24 @@ public class App extends Application {
         stage.show();
     }
 
+    /**
+     * Carga un archivo FXML y devuelve el objeto raíz de la vista.
+     * 
+     * Este método busca y carga un archivo FXML desde la carpeta de vistas del
+     * proyecto.
+     * Si el archivo no se encuentra, se lanza una excepción
+     * {@link IllegalStateException}.
+     * Una vez cargado el archivo FXML, se crea el objeto raíz correspondiente para
+     * ser utilizado en la interfaz de usuario.
+     * 
+     * @param fxml El nombre del archivo FXML que se desea cargar (sin la extensión
+     *             ".fxml").
+     * @return Un objeto de tipo {@link Parent} que representa el nodo raíz de la
+     *         vista cargada.
+     * @throws IOException           Si ocurre un error al cargar el archivo FXML.
+     * @throws IllegalStateException Si el archivo FXML no se encuentra en la
+     *                               ubicación esperada.
+     */
     private static Parent loadFXML(String fxml) throws IOException {
         URL fxmlLocation = App.class.getResource("/Vistas/" + fxml + ".fxml");
         if (fxmlLocation == null) {
@@ -75,23 +103,81 @@ public class App extends Application {
         return loader.load();
     }
 
+    /**
+     * Establece la raíz de la escena a partir de un archivo FXML.
+     * 
+     * Este método carga un archivo FXML usando el método {@link loadFXML} y
+     * establece el nodo raíz de la escena
+     * con el contenido cargado del archivo. Esto permite cambiar la interfaz de
+     * usuario cargando una nueva vista
+     * desde un archivo FXML en tiempo de ejecución.
+     * 
+     * @param fxml El nombre del archivo FXML que se desea cargar (sin la extensión
+     *             ".fxml").
+     * @throws IOException Si ocurre un error al cargar el archivo FXML o al
+     *                     establecer la raíz de la escena.
+     */
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
     // Métodos para cambiar vistas sin recargar
+    /**
+     * Muestra la vista secundaria cambiando la raíz de la escena.
+     * 
+     * Este método cambia la raíz de la escena a un nodo predefinido, que representa
+     * la vista secundaria de la aplicación. Esto permite mostrar una interfaz
+     * diferente
+     * o una nueva pantalla sin necesidad de crear una nueva escena completa.
+     * 
+     * @throws IllegalStateException Si no se ha inicializado correctamente la raíz
+     *                               secundaria.
+     */
     public static void showSecondary() {
         scene.setRoot(secondaryRoot);
     }
 
+    /**
+     * Muestra la vista terciaria cambiando la raíz de la escena.
+     * 
+     * Este método cambia la raíz de la escena a un nodo predefinido, que representa
+     * la vista terciaria de la aplicación. Esto permite mostrar una interfaz
+     * diferente
+     * o una nueva pantalla sin necesidad de crear una nueva escena completa.
+     * 
+     * @throws IllegalStateException Si no se ha inicializado correctamente la raíz
+     *                               terciaria.
+     */
     public static void showTertiary() {
         scene.setRoot(tertiaryRoot);
     }
 
+    /**
+     * Muestra la vista cuarta cambiando la raíz de la escena.
+     * 
+     * Este método cambia la raíz de la escena a un nodo predefinido, que representa
+     * la vista cuarta de la aplicación. Permite mostrar una nueva pantalla o
+     * interfaz
+     * diferente sin necesidad de crear una nueva escena completa.
+     * 
+     * @throws IllegalStateException Si no se ha inicializado correctamente la raíz
+     *                               cuarta.
+     */
     public static void showCuarta() {
         scene.setRoot(cuartaRoot);
     }
 
+    /**
+     * Muestra la vista quinta cambiando la raíz de la escena.
+     * 
+     * Este método cambia la raíz de la escena a un nodo predefinido, que representa
+     * la vista quinta de la aplicación. Permite mostrar una nueva pantalla o
+     * interfaz
+     * sin necesidad de crear una nueva escena completa.
+     * 
+     * @throws IllegalStateException Si no se ha inicializado correctamente la raíz
+     *                               quinta.
+     */
     public static void showQuinta() {
         scene.setRoot(quintaRoot);
     }

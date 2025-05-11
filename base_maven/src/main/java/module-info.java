@@ -1,3 +1,17 @@
+/**
+ * Módulo que configura las dependencias necesarias para la aplicación,
+ * incluyendo JavaFX y la conexión a una base de datos SQLite.
+ * 
+ * @author Daniel Alvarez Morales
+ * @version 1.0
+ * @since 2025
+ * 
+ *        Este módulo exporta los paquetes necesarios para la interfaz gráfica
+ *        (JavaFX)
+ *        y el acceso a la base de datos (SQLite), y abre los paquetes de los
+ *        controladores
+ *        y modelos para la interacción con FXML.
+ */
 module com.base {
     requires transitive javafx.controls;
     requires javafx.fxml;
