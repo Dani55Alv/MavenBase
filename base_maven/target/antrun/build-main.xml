@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <mkdir dir="C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven/Javadoc" />
+    <copy todir="C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven/Javadoc" overwrite="true">
+      <fileset dir="C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target/site/apidocs" />
+    </copy>
+  </target>
+</project>

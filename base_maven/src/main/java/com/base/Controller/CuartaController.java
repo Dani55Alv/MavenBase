@@ -48,42 +48,6 @@ public class CuartaController {
   private TableColumn<Jugador, Double> colPuntosOnline;
 
   /**
-   * Ordena la tabla de jugadores por el nombre de manera ascendente.
-   * 
-   * Este método realiza lo siguiente:
-   * 1. Configura la columna 'nombre' para ser ordenable.
-   * 2. Ordena la lista de jugadores en la tabla por el nombre utilizando un
-   * comparador.
-   * 3. Recarga los elementos de la tabla con la lista ordenada.
-   * 4. Marca visualmente la columna 'nombre' como la columna ordenada.
-   * 5. Forza una actualización visual de la tabla para reflejar el nuevo orden.
-   * 
-   * El método es útil para asegurar que la tabla siempre se muestre ordenada por
-   * nombre en orden ascendente
-   * y se actualice visualmente en la interfaz de usuario.
-   */
-  @FXML
-  public void ordenarTablaPorNombre() {
-    // Asegúrate de que la columna esté configurada para ser ordenable
-    colNombreOnline.setSortable(true);
-
-    // Ordenar la lista de jugadores por nombre
-    jugadoresList.sort(Comparator.comparing(Jugador::getNombre)); // Ordena directamente la lista observable
-
-    // Recargar los elementos de la tabla
-    tablaJugadoresONLINE.setItems(jugadoresList); // Vuelve a asignar la lista ordenada
-
-    // Visualmente marcar la columna como ordenada
-    tablaJugadoresONLINE.getSortOrder().clear(); // Limpiar cualquier columna previamente ordenada
-    tablaJugadoresONLINE.getSortOrder().add(colNombreOnline); // Establecer la columna como ordenada
-
-    // Forzar actualización visual de la tabla
-    tablaJugadoresONLINE.refresh();
-
-    System.out.println("Online ordenado");
-  }
-
-  /**
    * Actualiza la tabla de jugadores en la interfaz de usuario con los datos
    * obtenidos de la base de datos.
    * 
@@ -292,7 +256,6 @@ public class CuartaController {
     }
   }
 
- 
   /**
    * Este método ordena la tabla de jugadores por nombre de manera ascendente.
    * Utiliza el DAO para obtener la lista de jugadores ordenados por nombre y

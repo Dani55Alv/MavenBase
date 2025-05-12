@@ -1,0 +1,49 @@
+-Xdoclint:none
+@options
+@packages
+@argfile
+--class-path
+'C:/Users/daniy/.m2/repository/org/openjfx/javafx-controls/23.0.1/javafx-controls-23.0.1.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-graphics/23.0.1/javafx-graphics-23.0.1.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-base/23.0.1/javafx-base-23.0.1.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-fxml/23.0.1/javafx-fxml-23.0.1.jar;C:/Users/daniy/.m2/repository/org/xerial/sqlite-jdbc/3.43.2.0/sqlite-jdbc-3.43.2.0.jar;C:/Users/daniy/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar'
+--module-path
+'C:/Users/daniy/.m2/repository/org/openjfx/javafx-controls/23.0.1/javafx-controls-23.0.1-win.jar;C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/target/base_maven-1.0.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-base/23.0.1/javafx-base-23.0.1-win.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-graphics/23.0.1/javafx-graphics-23.0.1-win.jar;C:/Users/daniy/.m2/repository/org/openjfx/javafx-fxml/23.0.1/javafx-fxml-23.0.1-win.jar'
+--patch-module
+com.base='C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/java;C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/target/generated-sources/annotations'
+-encoding
+'UTF-8'
+-private
+-source
+'24'
+--module-source-path
+'C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/target/site/apidocs/src'
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'base_maven 1.0 API'
+-use
+-version
+-windowtitle
+'base_maven 1.0 API'
+com.base
+'C:/Users/daniy/OneDrive/Escritorio/visualStudioClases/MavenBase/base_maven/src/main/java/module-info.java'
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\allclasses-index.html = 1747046787555
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\allpackages-index.html = 1747046787559
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\constant-values.html = 1747046787225
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\element-list = 1747046786681
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\help-doc.html = 1747046787688
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\index-all.html = 1747046787655
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\index.html = 1747046787669
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\member-search-index.js = 1747046787573
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\module-search-index.js = 1747046787563
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\overview-tree.html = 1747046787518
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\package-search-index.js = 1747046787567
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\search.html = 1747046787661
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\serialized-form.html = 1747046787255
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\tag-search-index.js = 1747046787576
+C:\Users\daniy\OneDrive\Escritorio\visualStudioClases\MavenBase\base_maven\target\site\apidocs\type-search-index.js = 1747046787569

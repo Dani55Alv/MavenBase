@@ -1,0 +1,6 @@
+module:com.base
+com.base
+com.base.Controller
+com.base.DAO
+com.base.Model
+util

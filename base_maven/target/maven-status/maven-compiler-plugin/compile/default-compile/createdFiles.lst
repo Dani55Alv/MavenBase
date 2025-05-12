@@ -1,0 +1,12 @@
+com\base\Controller\TertiaryController.class
+com\base\Controller\QuintaController.class
+com\base\Model\Tablero.class
+com\base\Controller\PrimaryController.class
+com\base\Controller\SecondaryController.class
+com\base\DAO\JugadorDao.class
+module-info.class
+util\DatabaseConnector.class
+com\base\App.class
+com\base\Controller\ComeCocosController.class
+com\base\Controller\CuartaController.class
+com\base\Model\Jugador.class

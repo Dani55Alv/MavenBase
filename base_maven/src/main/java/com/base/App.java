@@ -41,8 +41,26 @@ public class App extends Application {
     private static CuartaController cuartaController;
     private static QuintaController quintaController;
 
+    /**
+     * Inicializa y muestra la ventana principal de la aplicación JavaFX.
+     *
+     * Este método realiza las siguientes acciones:
+     * - Carga las vistas FXML: secondary.fxml, tertiary.fxml, cuarta.fxml y
+     * quinta.fxml.
+     * - Obtiene los controladores correspondientes a cada una de esas vistas.
+     * - Establece la comunicación entre controladores (por ejemplo, el controlador
+     * de tertiary
+     * recibe una referencia al de secondary).
+     * - Carga la vista principal primary.fxml en una escena de 640x480 píxeles.
+     * - Aplica la hoja de estilos Menu.css a la escena.
+     * - Muestra la ventana principal con el título "Come_cocos".
+     *
+     * @param stage la ventana principal proporcionada por JavaFX.
+     * @throws IOException si ocurre un error al cargar los archivos FXML.
+     */
     @Override
     public void start(Stage stage) throws IOException {
+
         // Cargar secondary.fxml
         FXMLLoader loaderSecondary = new FXMLLoader(getClass().getResource("/Vistas/secondary.fxml"));
         secondaryRoot = loaderSecondary.load();
@@ -90,7 +108,7 @@ public class App extends Application {
      *             ".fxml").
      * @return Un objeto de tipo {@link Parent} que representa el nodo raíz de la
      *         vista cargada.
-     * @throws IOException           Si ocurre un error al cargar el archivo FXML.
+     * @throws IOException           Si ocurre un error al cargasr el archivo FXML.
      * @throws IllegalStateException Si el archivo FXML no se encuentra en la
      *                               ubicación esperada.
      */
