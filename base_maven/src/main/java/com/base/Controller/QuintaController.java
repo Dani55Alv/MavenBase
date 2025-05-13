@@ -34,6 +34,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class QuintaController {
 
+  
   /**
    * Este método cambia la vista actual a la vista principal (primary).
    * Se invoca cuando se desea navegar a la pantalla principal de la aplicación.
@@ -47,6 +48,7 @@ public class QuintaController {
 
 
   private JugadorDao jugadorDao;
+  
 
   /**
    * Inicializa la conexión con la base de datos SQLite y crea una instancia de
@@ -58,6 +60,7 @@ public class QuintaController {
    * @throws SQLException Si ocurre un error al intentar establecer la conexión
    *                      con la base de datos.
    */
+  @FXML
   private void initialize() {
     try {
       Connection connection = DriverManager.getConnection(
